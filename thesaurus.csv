@@ -1,0 +1,10 @@
+Term,Alternative Label,Broader Term,Related Terms
+Animal,,,
+Mammal,,Animal,
+Bird,,Animal,
+Dog,,Mammal,
+Cat,,Mammal,
+Eagle,,Bird,
+Pigeon,,Bird,
+Golden Retriever,,Dog,
+Persian Cat,,Cat,
