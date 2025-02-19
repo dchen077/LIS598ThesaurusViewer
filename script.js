@@ -1,15 +1,8 @@
 async function loadCSV() {
-    const csvURL = 'https://raw.githubusercontent.com/dchen077/LIS598ThesaurusViewer/main/thesaurus.csv';
-    try {
-        const response = await fetch(csvURL);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const csvText = await response.text();
-        processCSV(csvText);
-    } catch (error) {
-        console.error('Failed to load CSV:', error);
-    }
+    const csvURL = 'https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/YOUR_REPO/main/thesaurus.csv';
+    const response = await fetch(csvURL);
+    const csvText = await response.text();
+    processCSV(csvText);
 }
 
 function processCSV(csvText) {
