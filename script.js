@@ -1,5 +1,5 @@
 async function loadCSV() {
-    const csvURL = 'https://raw.githubusercontent.com/dchen077/LIS598ThesaurusViewer/main/thesaurus.csv';
+    const csvURL = 'https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/YOUR_REPO/main/thesaurus.csv';
     const response = await fetch(csvURL);
     const csvText = await response.text();
     processCSV(csvText);
@@ -7,9 +7,10 @@ async function loadCSV() {
 
 function processCSV(csvText) {
     let rows = csvText.trim().split("\n").map(row => row.split(","));
-    let headers = rows.shift();
+    let headers = rows.shift(); // Extract headers
     let thesaurus = {};
 
+    // Step 1: Convert CSV into a dictionary
     rows.forEach(row => {
         let term = row[0]?.trim();
         let broader = row[2]?.trim() || null;
@@ -30,27 +31,34 @@ function processCSV(csvText) {
         }
     });
 
+    // Step 2: Identify root terms (no broader term)
     let rootTerms = Object.values(thesaurus).filter(term => !term.broader);
-    displayHierarchy(rootTerms, thesaurus, document.getElementById("thesaurus-view"));
+    
+    // Step 3: Display hierarchy
+    let container = document.getElementById("thesaurus-view");
+    displayHierarchy(rootTerms, thesaurus, container, 0);
 }
 
-function displayHierarchy(terms, thesaurus, container) {
-    container.innerHTML = "";
+function displayHierarchy(terms, thesaurus, container, level) {
     terms.forEach(termObj => {
         let termDiv = document.createElement("div");
         let subContainer = document.createElement("div");
 
         termDiv.classList.add("term");
-        termDiv.textContent = termObj.name;
-        subContainer.classList.add("hidden");
+        termDiv.style.marginLeft = `${level * 20}px`; // Indent based on hierarchy level
+        termDiv.textContent = "▶ " + termObj.name;
+        termDiv.style.cursor = "pointer";
+
+        subContainer.style.display = "none"; // Initially hidden
 
         termDiv.onclick = () => {
-            subContainer.classList.toggle("hidden");
+            subContainer.style.display = subContainer.style.display === "block" ? "none" : "block";
+            termDiv.textContent = subContainer.style.display === "block" ? "▼ " + termObj.name : "▶ " + termObj.name;
         };
 
         if (termObj.narrower.length > 0) {
             let subTerms = termObj.narrower.map(termName => thesaurus[termName]);
-            displayHierarchy(subTerms, thesaurus, subContainer);
+            displayHierarchy(subTerms, thesaurus, subContainer, level + 1);
         }
 
         container.appendChild(termDiv);
