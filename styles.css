@@ -15,19 +15,43 @@ body {
 
 ul {
     list-style-type: none;
-    padding-left: 20px;
+    padding-left: 20px; /* Proper indentation for hierarchy */
 }
 
+/* Hierarchical list styling */
 li {
     cursor: pointer;
     color: blue;
+    position: relative; /* Needed for the expand/collapse icon */
 }
 
+/* Hover effect */
 li:hover {
     text-decoration: underline;
 }
 
+/* Top-level term styling */
 .term-title {
     font-weight: bold;
     font-size: 1.2em;
+}
+
+/* Arrow indicators for expandable items */
+li:has(ul)::before {
+    content: "▶"; /* Collapsed arrow */
+    position: absolute;
+    left: -15px;
+    font-size: 12px;
+    color: #555;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Expanded arrow when sublist is visible */
+li:has(ul):hover::before {
+    transform: rotate(90deg);
+}
+
+/* Hide sublists initially (for JS-based expand/collapse feature) */
+ul ul {
+    display: none;
 }
