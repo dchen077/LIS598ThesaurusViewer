@@ -33,7 +33,7 @@ function processCSV(csvText) {
         function addTerm(broader, narrower) {
             if (narrower) {
                 if (!thesaurus[narrower]) {
-                    thesaurus[narrower] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
+                    thesaurus[narrower] = { name: narrower, broader: [], narrower: [], related: [], alternative: "None" };
                 }
                 thesaurus[narrower].broader.push(broader);
                 if (broader && thesaurus[broader]) {
@@ -45,7 +45,7 @@ function processCSV(csvText) {
         // Ensure broader term exists in thesaurus
         if (broader) {
             if (!thesaurus[broader]) {
-                thesaurus[broader] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
+                thesaurus[broader] = { name: broader, broader: [], narrower: [], related: [], alternative: "None" };
             }
         }
 
@@ -64,36 +64,55 @@ function processCSV(csvText) {
 
         // Add alternative labels (USE FOR terms)
         if (alternativeLabel) {
-            thesaurus[broader]?.alternativeLabels.push(alternativeLabel);
-            thesaurus[narrower1]?.alternativeLabels.push(alternativeLabel);
-            thesaurus[narrower2]?.alternativeLabels.push(alternativeLabel);
-            thesaurus[narrower3]?.alternativeLabels.push(alternativeLabel);
+            thesaurus[broader]?.alternative = alternativeLabel;
+            thesaurus[narrower1]?.alternative = alternativeLabel;
+            thesaurus[narrower2]?.alternative = alternativeLabel;
+            thesaurus[narrower3]?.alternative = alternativeLabel;
         }
     });
 
-    displayHierarchy();
+    displayHierarchy(Object.values(thesaurus), thesaurus, document.getElementById("hierarchy-view"), 0);
 }
 
-function displayHierarchy() {
-    let hierarchyContainer = document.getElementById("hierarchy-view");
-    hierarchyContainer.innerHTML = createHierarchyList(null, 0);
-}
+function displayHierarchy(terms, thesaurus, container, level) {
+    terms.forEach(termObj => {
+        let termDiv = document.createElement("div");
+        let subContainer = document.createElement("div");
 
-function createHierarchyList(parent, level) {
-    let terms = Object.keys(thesaurus).filter(term => 
-        (parent ? thesaurus[term].broader.includes(parent) : thesaurus[term].broader.length === 0)
-    );
+        termDiv.classList.add("term");
+        termDiv.style.marginLeft = `${level * 20}px`; // Indent based on hierarchy level
+        termDiv.innerHTML = `<strong>▶ ${termObj.name}</strong>`;
 
-    if (terms.length === 0) return "";
+        if (termObj.alternative !== "None") {
+            termDiv.innerHTML += ` <span style="color: gray;">(${termObj.alternative})</span>`;
+        }
 
-    let content = "<ul style='padding-left: 20px;'>";
-    terms.forEach(term => {
-        content += `<li style="padding-left: ${level * 15}px; cursor: pointer; color: blue;" onclick="showDetails('${term}')">${term}</li>`;
-        content += createHierarchyList(term, level + 1); // Recursively build hierarchy
+        termDiv.style.cursor = "pointer";
+        subContainer.style.display = "none"; // Initially hidden
+
+        termDiv.onclick = () => {
+            subContainer.style.display = subContainer.style.display === "block" ? "none" : "block";
+            termDiv.innerHTML = subContainer.style.display === "block" 
+                ? `<strong>▼ ${termObj.name}</strong>` 
+                : `<strong>▶ ${termObj.name}</strong>`;
+
+            if (termObj.alternative !== "None") {
+                termDiv.innerHTML += ` <span style="color: gray;">(${termObj.alternative})</span>`;
+            }
+
+            // ✅ Show details in right panel when clicked
+            showDetails(termObj.name);
+        };
+
+        // ✅ Recursively render narrower terms
+        if (termObj.narrower.length > 0) {
+            let subTerms = termObj.narrower.map(termName => thesaurus[termName]);
+            displayHierarchy(subTerms, thesaurus, subContainer, level + 1);
+        }
+
+        container.appendChild(termDiv);
+        container.appendChild(subContainer);
     });
-    content += "</ul>";
-
-    return content;
 }
 
 function showDetails(term) {
@@ -104,13 +123,13 @@ function showDetails(term) {
         return;
     }
 
-    let { broader, narrower, related, alternativeLabels } = thesaurus[term];
+    let { broader, narrower, related, alternative } = thesaurus[term];
     detailsContainer.innerHTML = `
         <div class="term-title" style="font-weight: bold;">${term}</div>
         <p><strong>Broader Terms:</strong> ${broader.length ? broader.join(", ") : "None"}</p>
         <p><strong>Narrower Terms:</strong> ${narrower.length ? narrower.join(", ") : "None"}</p>
         <p><strong>Related Terms:</strong> ${related.length ? related.join(", ") : "None"}</p>
-        <p><strong>USE FOR:</strong> ${alternativeLabels.length ? alternativeLabels.join(", ") : "None"}</p>
+        <p><strong>USE FOR:</strong> ${alternative !== "None" ? alternative : "None"}</p>
     `;
 }
 
