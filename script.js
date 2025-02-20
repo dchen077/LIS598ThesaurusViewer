@@ -103,6 +103,4 @@ function displayHierarchy(terms, thesaurus, container, level) {
         // Add related terms info
         if (termObj.related.length > 0) {
             let relatedDiv = document.createElement("div");
-            relatedDiv.style.fontSize = "12px";
-
-
+            relatedDiv.style.fontSize = "12px";}
