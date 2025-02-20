@@ -1,10 +1,10 @@
-Term,Alternative Label,Broader Term,Related Terms
+const csvText = `Term,Alternative Label,Broader Term,Related Terms
 Animal,,,
 Mammal,,Animal,
 Bird,,Animal,
 Dog,,Mammal,
 Cat,,Mammal,
 Eagle,,Bird,
-Pigeon,Small Piegeon,Bird,Dog
+Pigeon,Small Pigeon,Bird,Dog
 Golden Retriever,,Dog,
-Persian Cat,,Cat,
+Persian Cat,,Cat,`;
