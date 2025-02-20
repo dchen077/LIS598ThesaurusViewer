@@ -21,45 +21,46 @@ function processCSV(csvText) {
     let headers = rows.shift(); // Remove header row
 
     thesaurus = {}; // Reset thesaurus object
+    let lastKnownBroader = null; // Track the last known broader term
 
     rows.forEach(row => {
-        let broader = row[0]?.trim() || "";
+        let broader = row[0]?.trim() || lastKnownBroader; // Use last known broader if empty
         let narrower1 = row[1]?.trim() || "";
         let narrower2 = row[2]?.trim() || "";
         let narrower3 = row[3]?.trim() || "";
         let related = row[4]?.trim() || "";
         let alternativeLabel = row[5]?.trim() || ""; // USE FOR column
 
-        // Add broader term to thesaurus if not exists
-        if (broader && !thesaurus[broader]) {
-            thesaurus[broader] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
+        if (broader) {
+            if (!thesaurus[broader]) {
+                thesaurus[broader] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
+            }
+            lastKnownBroader = broader; // Update the last known broader term
         }
 
-        // Add first-level narrower term
+        // Process hierarchy correctly
         if (narrower1) {
             if (!thesaurus[narrower1]) {
                 thesaurus[narrower1] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
             }
             thesaurus[narrower1].broader.push(broader);
-            thesaurus[broader].narrower.push(narrower1);
+            thesaurus[broader]?.narrower.push(narrower1);
         }
 
-        // Add second-level narrower term
         if (narrower2) {
             if (!thesaurus[narrower2]) {
                 thesaurus[narrower2] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
             }
             thesaurus[narrower2].broader.push(narrower1);
-            thesaurus[narrower1].narrower.push(narrower2);
+            thesaurus[narrower1]?.narrower.push(narrower2);
         }
 
-        // Add third-level narrower term
         if (narrower3) {
             if (!thesaurus[narrower3]) {
                 thesaurus[narrower3] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
             }
             thesaurus[narrower3].broader.push(narrower2);
-            thesaurus[narrower2].narrower.push(narrower3);
+            thesaurus[narrower2]?.narrower.push(narrower3);
         }
 
         // Add related terms
