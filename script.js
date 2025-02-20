@@ -43,15 +43,19 @@ function displayHierarchy() {
     hierarchyContainer.innerHTML = createHierarchyList(null, 0);
 }
 
-function createHierarchyList(parent, indentLevel) {
-    let terms = Object.keys(thesaurus).filter(term => (parent ? thesaurus[term].broader.includes(parent) : thesaurus[term].broader.length === 0));
+function createHierarchyList(parent) {
+    let terms = Object.keys(thesaurus).filter(term => 
+        (parent ? thesaurus[term].broader.includes(parent) : thesaurus[term].broader.length === 0)
+    );
 
     if (terms.length === 0) return "";
-    
+
     let content = "<ul>";
     terms.forEach(term => {
-        content += `<li style="margin-left:${indentLevel * 20}px;" onclick="showDetails('${term}')">${term}</li>`;
-        content += createHierarchyList(term, indentLevel + 1);
+        content += `<li>${term}`;
+        let subList = createHierarchyList(term); // Recursively build nested structure
+        if (subList) content += subList;
+        content += "</li>";
     });
     content += "</ul>";
 
