@@ -8,7 +8,7 @@ async function loadCSV() {
 
         const csvText = await response.text();
         console.log("✅ CSV Loaded Successfully!");
-        console.log("CSV Content:\n", csvText);  // ✅ Logs raw CSV data
+        console.log("CSV Content:\n", JSON.stringify(csvText));  // ✅ Logs raw CSV data safely
 
         processCSV(csvText);
     } catch (error) {
@@ -25,6 +25,8 @@ function processCSV(csvText) {
     console.log("Parsed Rows:", rows);
 
     let headers = rows.shift();
+    console.log("CSV Headers:", headers);
+
     let thesaurus = {};
 
     rows.forEach(row => {
@@ -69,6 +71,7 @@ function processCSV(csvText) {
     container.innerHTML = "";
     displayHierarchy(rootTerms, thesaurus, container, 0);
 }
+
 
 function displayHierarchy(terms, thesaurus, container, level) {
     terms.forEach(termObj => {
