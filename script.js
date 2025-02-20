@@ -83,17 +83,19 @@ function displayHierarchy(terms, thesaurus, container, level) {
         }
         termDiv.style.cursor = "pointer";
         subContainer.style.display = "none"; // Initially hidden
-        termDiv.onclick = () => {
-            subContainer.style.display = subContainer.style.display === "block" ? "none" : "block";
-            termDiv.innerHTML = subContainer.style.display === "block" 
-                ? `<strong>▼ ${termObj.name}</strong>` 
-                : `<strong>▶ ${termObj.name}</strong>`;
-            if (termObj.alternative !== "None") {
-                termDiv.innerHTML += ` <span style="color: gray;">(${termObj.alternative})</span>`;
-            }
-            // ✅ Show details in right panel when clicked
-            showDetails(termObj.name);
-        };
+       termDiv.onclick = () => {
+    subContainer.style.display = subContainer.style.display === "block" ? "none" : "block";
+    if (subContainer.style.display === "block") {
+        termDiv.innerHTML = `<strong>▼ ${termObj.name}</strong>`;
+    } else {
+        termDiv.innerHTML = `<strong>▶ ${termObj.name}</strong>`;
+    }
+    if (termObj.alternative !== "None") {
+        termDiv.innerHTML += ` <span style="color: gray;">(${termObj.alternative})</span>`;
+    }
+    // ✅ Show details in right panel when clicked
+    showDetails(termObj.name);
+};
         // ✅ Recursively render narrower terms
         if (termObj.narrower.length > 0) {
             let subTerms = termObj.narrower.map(termName => thesaurus[termName]);
