@@ -1,14 +1,18 @@
 async function loadCSV() {
     const csvURL = 'https://raw.githubusercontent.com/dchen077/LIS598ThesaurusViewer/main/thesaurus.csv';
+    console.log("Fetching CSV from:", csvURL);
 
     try {
         const response = await fetch(csvURL);
-        if (!response.ok) throw new Error("Failed to fetch CSV file.");
-        
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
         const csvText = await response.text();
+        console.log("✅ CSV Loaded Successfully!");
+        console.log("CSV Content:\n", csvText);  // ✅ Logs raw CSV content
+
         processCSV(csvText);
     } catch (error) {
-        console.error("Error loading CSV:", error);
+        console.error("❌ Error loading CSV:", error);
         document.getElementById("thesaurus-view").innerHTML = "<p style='color: red;'>Failed to load thesaurus data.</p>";
     }
 }
