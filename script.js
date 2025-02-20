@@ -26,8 +26,9 @@ function processCSV(csvText) {
         let broader = row[0]?.trim() || "";
         let narrower1 = row[1]?.trim() || "";
         let narrower2 = row[2]?.trim() || "";
-        let related = row[3]?.trim() || "";
-        let alternativeLabel = row[4]?.trim() || ""; // USE FOR column
+        let narrower3 = row[3]?.trim() || "";
+        let related = row[4]?.trim() || "";
+        let alternativeLabel = row[5]?.trim() || ""; // USE FOR column
 
         // Add broader term to thesaurus if not exists
         if (broader && !thesaurus[broader]) {
@@ -52,11 +53,21 @@ function processCSV(csvText) {
             thesaurus[narrower1].narrower.push(narrower2);
         }
 
+        // Add third-level narrower term
+        if (narrower3) {
+            if (!thesaurus[narrower3]) {
+                thesaurus[narrower3] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
+            }
+            thesaurus[narrower3].broader.push(narrower2);
+            thesaurus[narrower2].narrower.push(narrower3);
+        }
+
         // Add related terms
         if (related) {
             thesaurus[broader]?.related.push(related);
             thesaurus[narrower1]?.related.push(related);
             thesaurus[narrower2]?.related.push(related);
+            thesaurus[narrower3]?.related.push(related);
         }
 
         // Add alternative labels (USE FOR terms)
@@ -64,6 +75,7 @@ function processCSV(csvText) {
             thesaurus[broader]?.alternativeLabels.push(alternativeLabel);
             thesaurus[narrower1]?.alternativeLabels.push(alternativeLabel);
             thesaurus[narrower2]?.alternativeLabels.push(alternativeLabel);
+            thesaurus[narrower3]?.alternativeLabels.push(alternativeLabel);
         }
     });
 
@@ -103,10 +115,8 @@ function showDetails(term) {
     let { broader, narrower, related, alternativeLabels } = thesaurus[term];
     detailsContainer.innerHTML = `
         <div class="term-title">${term}</div>
-        <p><strong>Broader Terms:</strong> ${broader.length ? broader.join(", ") : "None"}</p>
-        <p><strong>Narrower Terms:</strong> ${narrower.length ? narrower.join(", ") : "None"}</p>
-        <p><strong>Related Terms:</strong> ${related.length ? related.join(", ") : "None"}</p>
-        <p><strong>Alternative Labels (USE FOR):</strong> ${alternativeLabels.length ? alternativeLabels.join(", ") : "None"}</p>
+        <p><strong>BT:</strong> ${broader.length ? broader.join(", ") : "None"}</p>
+        <p><strong>USE FOR:</strong> ${alternativeLabels.length ? alternativeLabels.join(", ") : "None"}</p>
     `;
 }
 
