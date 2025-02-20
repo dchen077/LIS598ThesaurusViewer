@@ -100,7 +100,23 @@ function displayHierarchy(terms, thesaurus, container, level) {
             }
         };
 
-        // Add related terms info
+        // ✅ Fix: Properly add related terms to the container
         if (termObj.related.length > 0) {
             let relatedDiv = document.createElement("div");
-            relatedDiv.style.fontSize = "12px";}
+            relatedDiv.style.fontSize = "12px";
+            relatedDiv.style.color = "gray";
+            relatedDiv.style.marginLeft = `${(level + 1) * 20}px`;
+            relatedDiv.innerHTML = `<em>Related: ${termObj.related.join(", ")}</em>`;
+            container.appendChild(relatedDiv); // ✅ Now relatedDiv is added to the DOM!
+        }
+
+        // ✅ Fix: Recursively render narrower terms
+        if (termObj.narrower.length > 0) {
+            let subTerms = termObj.narrower.map(termName => thesaurus[termName]);
+            displayHierarchy(subTerms, thesaurus, subContainer, level + 1);
+        }
+
+        container.appendChild(termDiv);
+        container.appendChild(subContainer);
+    });
+} // ✅ Ensure function ends properly!
