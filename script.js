@@ -1,3 +1,5 @@
+let thesaurus = {}; // ✅ Global thesaurus object
+
 async function loadCSV() {
     const csvURL = 'https://raw.githubusercontent.com/dchen077/LIS598ThesaurusViewer/main/thesaurus.csv';
     console.log("Fetching CSV from:", csvURL);
@@ -18,7 +20,7 @@ function processCSV(csvText) {
     let rows = csvText.trim().split(/\r?\n/).map(row => row.split(","));
     let headers = rows.shift(); 
 
-    let thesaurus = {};
+    thesaurus = {}; // Reset thesaurus object
     rows.forEach(row => {
         let term = row[0].trim();
         let broader = row[1]?.trim() || "";
@@ -33,23 +35,23 @@ function processCSV(csvText) {
         if (related) thesaurus[term].related.push(related);
     });
 
-    displayHierarchy(thesaurus);
+    displayHierarchy();
 }
 
-function displayHierarchy(thesaurus) {
+function displayHierarchy() {
     let hierarchyContainer = document.getElementById("hierarchy-view");
-    hierarchyContainer.innerHTML = createHierarchyList(thesaurus, null);
+    hierarchyContainer.innerHTML = createHierarchyList(null, 0);
 }
 
-function createHierarchyList(thesaurus, parent) {
+function createHierarchyList(parent, indentLevel) {
     let terms = Object.keys(thesaurus).filter(term => (parent ? thesaurus[term].broader.includes(parent) : thesaurus[term].broader.length === 0));
-    
+
     if (terms.length === 0) return "";
     
     let content = "<ul>";
     terms.forEach(term => {
-        content += `<li onclick="showDetails('${term}')">${term}</li>`;
-        content += createHierarchyList(thesaurus, term);
+        content += `<li style="margin-left:${indentLevel * 20}px;" onclick="showDetails('${term}')">${term}</li>`;
+        content += createHierarchyList(term, indentLevel + 1);
     });
     content += "</ul>";
 
