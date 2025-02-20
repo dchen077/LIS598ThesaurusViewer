@@ -61,10 +61,18 @@ function processCSV(csvText) {
 
         // Add alternative labels (USE FOR terms)
         if (alternativeLabel) {
-            thesaurus[broader]?.alternative = alternativeLabel;
-            thesaurus[narrower1]?.alternative = alternativeLabel;
-            thesaurus[narrower2]?.alternative = alternativeLabel;
-            thesaurus[narrower3]?.alternative = alternativeLabel;
+            if (thesaurus[broader]) {
+                thesaurus[broader].alternative = alternativeLabel;
+            }
+            if (thesaurus[narrower1]) {
+                thesaurus[narrower1].alternative = alternativeLabel;
+            }
+            if (thesaurus[narrower2]) {
+                thesaurus[narrower2].alternative = alternativeLabel;
+            }
+            if (thesaurus[narrower3]) {
+                thesaurus[narrower3].alternative = alternativeLabel;
+            }
         }
     });
 
@@ -83,19 +91,19 @@ function displayHierarchy(terms, thesaurus, container, level) {
         }
         termDiv.style.cursor = "pointer";
         subContainer.style.display = "none"; // Initially hidden
-       termDiv.onclick = () => {
-    subContainer.style.display = subContainer.style.display === "block" ? "none" : "block";
-    if (subContainer.style.display === "block") {
-        termDiv.innerHTML = `<strong>▼ ${termObj.name}</strong>`;
-    } else {
-        termDiv.innerHTML = `<strong>▶ ${termObj.name}</strong>`;
-    }
-    if (termObj.alternative !== "None") {
-        termDiv.innerHTML += ` <span style="color: gray;">(${termObj.alternative})</span>`;
-    }
-    // ✅ Show details in right panel when clicked
-    showDetails(termObj.name);
-};
+        termDiv.onclick = () => {
+            subContainer.style.display = subContainer.style.display === "block" ? "none" : "block";
+            if (subContainer.style.display === "block") {
+                termDiv.innerHTML = `<strong>▼ ${termObj.name}</strong>`;
+            } else {
+                termDiv.innerHTML = `<strong>▶ ${termObj.name}</strong>`;
+            }
+            if (termObj.alternative !== "None") {
+                termDiv.innerHTML += ` <span style="color: gray;">(${termObj.alternative})</span>`;
+            }
+            // ✅ Show details in right panel when clicked
+            showDetails(termObj.name);
+        };
         // ✅ Recursively render narrower terms
         if (termObj.narrower.length > 0) {
             let subTerms = termObj.narrower.map(termName => thesaurus[termName]);
@@ -126,4 +134,3 @@ function showDetails(term) {
 document.addEventListener("DOMContentLoaded", () => {
     loadCSV();
 });
-
