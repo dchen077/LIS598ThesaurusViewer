@@ -1,8 +1,33 @@
-.term {
-    font-weight: bold;
-    margin: 5px 0;
+body {
+    font-family: Arial, sans-serif;
 }
 
-.hidden {
-    display: none;
+.container {
+    display: flex;
+    gap: 20px;
+}
+
+.panel {
+    width: 50%;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+li {
+    cursor: pointer;
+    color: blue;
+}
+
+li:hover {
+    text-decoration: underline;
+}
+
+.term-title {
+    font-weight: bold;
+    font-size: 1.2em;
 }

@@ -7,40 +7,73 @@ async function loadCSV() {
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
         const csvText = await response.text();
-        console.log("✅ CSV Loaded Successfully!");
-        console.log("CSV Content (First 500 chars):", csvText.substring(0, 500)); // Logs a preview of CSV
-
         processCSV(csvText);
     } catch (error) {
         console.error("❌ Error loading CSV:", error);
-        document.getElementById("thesaurus-view").innerHTML = "<p style='color: red;'>Failed to load thesaurus data.</p>";
-        
-        if (error.message.includes('CORS')) {
-            console.warn("Possible CORS issue. Try hosting the CSV on a different server.");
-        }
+        document.getElementById("hierarchy-view").innerHTML = "<p style='color: red;'>Failed to load thesaurus data.</p>";
     }
 }
 
 function processCSV(csvText) {
-    console.log("Processing CSV Data...");
-
     let rows = csvText.trim().split(/\r?\n/).map(row => row.split(","));
-    console.log("Parsed Rows (Preview):", rows.slice(0, 5)); // Log only the first 5 rows for debugging
+    let headers = rows.shift(); 
 
-    let headers = rows.shift(); // Extract headers
-    console.log("CSV Headers:", headers);
-
-    let content = '<ul>';
+    let thesaurus = {};
     rows.forEach(row => {
-        content += '<li><strong>' + row[0] + ':</strong> ' + (row.slice(1).join(", ") || "No synonyms") + '</li>';
-    });
-    content += '</ul>';
+        let term = row[0].trim();
+        let broader = row[1]?.trim() || "";
+        let related = row[2]?.trim() || "";
 
-    document.getElementById("thesaurus-view").innerHTML = content;
+        if (!thesaurus[term]) thesaurus[term] = { broader: [], related: [], narrower: [] };
+        if (broader) {
+            if (!thesaurus[broader]) thesaurus[broader] = { broader: [], related: [], narrower: [] };
+            thesaurus[broader].narrower.push(term);
+            thesaurus[term].broader.push(broader);
+        }
+        if (related) thesaurus[term].related.push(related);
+    });
+
+    displayHierarchy(thesaurus);
 }
 
-// Ensure script runs when DOM is loaded
+function displayHierarchy(thesaurus) {
+    let hierarchyContainer = document.getElementById("hierarchy-view");
+    hierarchyContainer.innerHTML = createHierarchyList(thesaurus, null);
+}
+
+function createHierarchyList(thesaurus, parent) {
+    let terms = Object.keys(thesaurus).filter(term => (parent ? thesaurus[term].broader.includes(parent) : thesaurus[term].broader.length === 0));
+    
+    if (terms.length === 0) return "";
+    
+    let content = "<ul>";
+    terms.forEach(term => {
+        content += `<li onclick="showDetails('${term}')">${term}</li>`;
+        content += createHierarchyList(thesaurus, term);
+    });
+    content += "</ul>";
+
+    return content;
+}
+
+function showDetails(term) {
+    let detailsContainer = document.getElementById("details-view");
+
+    if (!thesaurus[term]) {
+        detailsContainer.innerHTML = "No details available.";
+        return;
+    }
+
+    let { broader, narrower, related } = thesaurus[term];
+    detailsContainer.innerHTML = `
+        <div class="term-title">${term}</div>
+        <p><strong>Broader Terms:</strong> ${broader.length ? broader.join(", ") : "None"}</p>
+        <p><strong>Narrower Terms:</strong> ${narrower.length ? narrower.join(", ") : "None"}</p>
+        <p><strong>Related Terms:</strong> ${related.length ? related.join(", ") : "None"}</p>
+    `;
+}
+
+// Load CSV after DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("📌 DOM Loaded. Initiating CSV Load...");
     loadCSV();
 });

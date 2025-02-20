@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thesaurus Viewer</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Thesaurus Viewer</h1>
-    <div id="thesaurus-view">Loading...</div>
+    <div class="container">
+        <div id="hierarchy-view" class="panel"></div>
+        <div id="details-view" class="panel">Select a term to see details.</div>
+    </div>
 
-    <script src="script.js"></script> <!-- ✅ Ensure this is correct! -->
+    <script src="script.js"></script>
 </body>
 </html>
