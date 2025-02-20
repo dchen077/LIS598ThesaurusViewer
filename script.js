@@ -28,6 +28,19 @@ function processCSV(csvText) {
         let alternativeLabel = row[5]?.trim(); // USE FOR column
 
         function addTerm(broader, narrower) {
+        if (narrower) {
+            if (!thesaurus[narrower]) {
+                thesaurus[narrower] = { name: narrower, broader: [], narrower: [], related: [], alternative: [] };
+            }
+            if (broader) {
+                if (!thesaurus[broader]) {
+                    thesaurus[broader] = { name: broader, broader: [], narrower: [], related: [], alternative: [] };
+                }
+                thesaurus[narrower].broader.push(broader);
+                thesaurus[broader].narrower.push(narrower);
+            }
+        }
+    }
             if (narrower) {
                 if (!thesaurus[narrower]) {
                     thesaurus[narrower] = { name: narrower, broader: [], narrower: [], related: [], alternative: "None" };
@@ -61,6 +74,18 @@ function processCSV(csvText) {
 
         // Add alternative labels (USE FOR terms)
         if (alternativeLabel) {
+        if (!thesaurus[broader]?.alternative) thesaurus[broader].alternative = [];
+        thesaurus[broader].alternative.push(alternativeLabel);
+
+        if (!thesaurus[narrower1]?.alternative) thesaurus[narrower1].alternative = [];
+        thesaurus[narrower1].alternative.push(alternativeLabel);
+
+        if (!thesaurus[narrower2]?.alternative) thesaurus[narrower2].alternative = [];
+        thesaurus[narrower2].alternative.push(alternativeLabel);
+
+        if (!thesaurus[narrower3]?.alternative) thesaurus[narrower3].alternative = [];
+        thesaurus[narrower3].alternative.push(alternativeLabel);
+    }
             if (thesaurus[broader]) {
                 thesaurus[broader].alternative = alternativeLabel;
             }
