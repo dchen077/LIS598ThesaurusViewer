@@ -1,5 +1,4 @@
 let thesaurus = {}; // ✅ Global thesaurus object
-let lastKnownBroader = ""; // Track last known broader term
 
 async function loadCSV() {
     const csvURL = 'https://raw.githubusercontent.com/dchen077/LIS598ThesaurusViewer/main/thesaurus.csv';
@@ -22,50 +21,43 @@ function processCSV(csvText) {
     let headers = rows.shift(); // Remove header row
 
     thesaurus = {}; // Reset thesaurus object
-    lastKnownBroader = null; // Reset last known broader term
+    let lastKnownBroader = null; // Track the last known broader term
 
     rows.forEach(row => {
-        let broader = row[0]?.trim();
-        let narrower1 = row[1]?.trim();
-        let narrower2 = row[2]?.trim();
-        let narrower3 = row[3]?.trim();
-        let related = row[4]?.trim();
-        let alternativeLabel = row[5]?.trim(); // USE FOR column
+        let broader = row[0]?.trim() || lastKnownBroader; // Use last known broader if empty
+        let narrower1 = row[1]?.trim() || "";
+        let narrower2 = row[2]?.trim() || "";
+        let narrower3 = row[3]?.trim() || "";
+        let narrower4 = row[4]?.trim() || "";
+        let related = row[5]?.trim() || "";
+        let alternativeLabel = row[6]?.trim() || ""; // USE FOR column
 
-        // Ensure broader term is valid
         if (broader) {
             if (!thesaurus[broader]) {
                 thesaurus[broader] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
             }
             lastKnownBroader = broader; // Update the last known broader term
-        } else {
-            broader = lastKnownBroader; // Use the last known broader term if missing
         }
 
-        // Ensure terms exist and link them properly
-        if (narrower1) {
-            if (!thesaurus[narrower1]) {
-                thesaurus[narrower1] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
+        // Process hierarchy correctly
+        function addNarrower(parent, child) {
+            if (child) {
+                if (!thesaurus[child]) {
+                    thesaurus[child] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
+                }
+                if (!thesaurus[child].broader.includes(parent)) {
+                    thesaurus[child].broader.push(parent);
+                }
+                if (!thesaurus[parent]?.narrower.includes(child)) {
+                    thesaurus[parent]?.narrower.push(child);
+                }
             }
-            thesaurus[narrower1].broader.push(broader);
-            thesaurus[broader]?.narrower.push(narrower1);
         }
 
-        if (narrower2) {
-            if (!thesaurus[narrower2]) {
-                thesaurus[narrower2] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
-            }
-            thesaurus[narrower2].broader.push(narrower1);
-            thesaurus[narrower1]?.narrower.push(narrower2);
-        }
-
-        if (narrower3) {
-            if (!thesaurus[narrower3]) {
-                thesaurus[narrower3] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
-            }
-            thesaurus[narrower3].broader.push(narrower2);
-            thesaurus[narrower2]?.narrower.push(narrower3);
-        }
+        addNarrower(broader, narrower1);
+        addNarrower(narrower1, narrower2);
+        addNarrower(narrower2, narrower3);
+        addNarrower(narrower3, narrower4);
 
         // Add related terms
         if (related) {
@@ -73,6 +65,7 @@ function processCSV(csvText) {
             thesaurus[narrower1]?.related.push(related);
             thesaurus[narrower2]?.related.push(related);
             thesaurus[narrower3]?.related.push(related);
+            thesaurus[narrower4]?.related.push(related);
         }
 
         // Add alternative labels (USE FOR terms)
@@ -81,10 +74,10 @@ function processCSV(csvText) {
             thesaurus[narrower1]?.alternativeLabels.push(alternativeLabel);
             thesaurus[narrower2]?.alternativeLabels.push(alternativeLabel);
             thesaurus[narrower3]?.alternativeLabels.push(alternativeLabel);
+            thesaurus[narrower4]?.alternativeLabels.push(alternativeLabel);
         }
     });
 
-    console.log("Thesaurus Structure:", thesaurus); // Debugging Log
     displayHierarchy();
 }
 
@@ -120,7 +113,7 @@ function showDetails(term) {
 
     let { broader, narrower, related, alternativeLabels } = thesaurus[term];
     detailsContainer.innerHTML = `
-        <div class="term-title"><strong>${term}</strong></div>
+        <div class="term-title">${term}</div>
         <p><strong>Broader Terms:</strong> ${broader.length ? broader.join(", ") : "None"}</p>
         <p><strong>Narrower Terms:</strong> ${narrower.length ? narrower.join(", ") : "None"}</p>
         <p><strong>Related Terms:</strong> ${related.length ? related.join(", ") : "None"}</p>
