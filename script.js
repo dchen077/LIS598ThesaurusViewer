@@ -18,21 +18,53 @@ async function loadCSV() {
 
 function processCSV(csvText) {
     let rows = csvText.trim().split(/\r?\n/).map(row => row.split(","));
-    let headers = rows.shift(); 
+    let headers = rows.shift(); // Remove header row
 
     thesaurus = {}; // Reset thesaurus object
-    rows.forEach(row => {
-        let term = row[0].trim();
-        let broader = row[1]?.trim() || "";
-        let related = row[2]?.trim() || "";
 
-        if (!thesaurus[term]) thesaurus[term] = { broader: [], related: [], narrower: [] };
-        if (broader) {
-            if (!thesaurus[broader]) thesaurus[broader] = { broader: [], related: [], narrower: [] };
-            thesaurus[broader].narrower.push(term);
-            thesaurus[term].broader.push(broader);
+    rows.forEach(row => {
+        let broader = row[0]?.trim() || "";
+        let narrower1 = row[1]?.trim() || "";
+        let narrower2 = row[2]?.trim() || "";
+        let related = row[3]?.trim() || "";
+        let alternativeLabel = row[4]?.trim() || ""; // USE FOR column
+
+        // Add broader term to thesaurus if not exists
+        if (broader && !thesaurus[broader]) {
+            thesaurus[broader] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
         }
-        if (related) thesaurus[term].related.push(related);
+
+        // Add first-level narrower term
+        if (narrower1) {
+            if (!thesaurus[narrower1]) {
+                thesaurus[narrower1] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
+            }
+            thesaurus[narrower1].broader.push(broader);
+            thesaurus[broader].narrower.push(narrower1);
+        }
+
+        // Add second-level narrower term
+        if (narrower2) {
+            if (!thesaurus[narrower2]) {
+                thesaurus[narrower2] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
+            }
+            thesaurus[narrower2].broader.push(narrower1);
+            thesaurus[narrower1].narrower.push(narrower2);
+        }
+
+        // Add related terms
+        if (related) {
+            thesaurus[broader]?.related.push(related);
+            thesaurus[narrower1]?.related.push(related);
+            thesaurus[narrower2]?.related.push(related);
+        }
+
+        // Add alternative labels (USE FOR terms)
+        if (alternativeLabel) {
+            thesaurus[broader]?.alternativeLabels.push(alternativeLabel);
+            thesaurus[narrower1]?.alternativeLabels.push(alternativeLabel);
+            thesaurus[narrower2]?.alternativeLabels.push(alternativeLabel);
+        }
     });
 
     displayHierarchy();
@@ -43,7 +75,7 @@ function displayHierarchy() {
     hierarchyContainer.innerHTML = createHierarchyList(null, 0);
 }
 
-function createHierarchyList(parent) {
+function createHierarchyList(parent, level) {
     let terms = Object.keys(thesaurus).filter(term => 
         (parent ? thesaurus[term].broader.includes(parent) : thesaurus[term].broader.length === 0)
     );
@@ -52,10 +84,8 @@ function createHierarchyList(parent) {
 
     let content = "<ul>";
     terms.forEach(term => {
-        content += `<li>${term}`;
-        let subList = createHierarchyList(term); // Recursively build nested structure
-        if (subList) content += subList;
-        content += "</li>";
+        content += `<li style="margin-left: ${level * 15}px; cursor: pointer; color: blue;" onclick="showDetails('${term}')">${term}</li>`;
+        content += createHierarchyList(term, level + 1); // Recursively build hierarchy
     });
     content += "</ul>";
 
@@ -70,12 +100,13 @@ function showDetails(term) {
         return;
     }
 
-    let { broader, narrower, related } = thesaurus[term];
+    let { broader, narrower, related, alternativeLabels } = thesaurus[term];
     detailsContainer.innerHTML = `
         <div class="term-title">${term}</div>
         <p><strong>Broader Terms:</strong> ${broader.length ? broader.join(", ") : "None"}</p>
         <p><strong>Narrower Terms:</strong> ${narrower.length ? narrower.join(", ") : "None"}</p>
         <p><strong>Related Terms:</strong> ${related.length ? related.join(", ") : "None"}</p>
+        <p><strong>Alternative Labels (USE FOR):</strong> ${alternativeLabels.length ? alternativeLabels.join(", ") : "None"}</p>
     `;
 }
 
