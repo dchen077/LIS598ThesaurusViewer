@@ -1,4 +1,5 @@
 let thesaurus = {}; // ✅ Global thesaurus object
+let lastKnownBroader = ""; // Track last known broader term
 
 async function loadCSV() {
     const csvURL = 'https://raw.githubusercontent.com/dchen077/LIS598ThesaurusViewer/main/thesaurus.csv';
@@ -21,24 +22,27 @@ function processCSV(csvText) {
     let headers = rows.shift(); // Remove header row
 
     thesaurus = {}; // Reset thesaurus object
-    let lastKnownBroader = null; // Track the last known broader term
+    lastKnownBroader = null; // Reset last known broader term
 
     rows.forEach(row => {
-        let broader = row[0]?.trim() || lastKnownBroader; // Use last known broader if empty
-        let narrower1 = row[1]?.trim() || "";
-        let narrower2 = row[2]?.trim() || "";
-        let narrower3 = row[3]?.trim() || "";
-        let related = row[4]?.trim() || "";
-        let alternativeLabel = row[5]?.trim() || ""; // USE FOR column
+        let broader = row[0]?.trim();
+        let narrower1 = row[1]?.trim();
+        let narrower2 = row[2]?.trim();
+        let narrower3 = row[3]?.trim();
+        let related = row[4]?.trim();
+        let alternativeLabel = row[5]?.trim(); // USE FOR column
 
+        // Ensure broader term is valid
         if (broader) {
             if (!thesaurus[broader]) {
                 thesaurus[broader] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
             }
             lastKnownBroader = broader; // Update the last known broader term
+        } else {
+            broader = lastKnownBroader; // Use the last known broader term if missing
         }
 
-        // Process hierarchy correctly
+        // Ensure terms exist and link them properly
         if (narrower1) {
             if (!thesaurus[narrower1]) {
                 thesaurus[narrower1] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
@@ -80,6 +84,7 @@ function processCSV(csvText) {
         }
     });
 
+    console.log("Thesaurus Structure:", thesaurus); // Debugging Log
     displayHierarchy();
 }
 
@@ -115,8 +120,10 @@ function showDetails(term) {
 
     let { broader, narrower, related, alternativeLabels } = thesaurus[term];
     detailsContainer.innerHTML = `
-        <div class="term-title">${term}</div>
-        <p><strong>BT:</strong> ${broader.length ? broader.join(", ") : "None"}</p>
+        <div class="term-title"><strong>${term}</strong></div>
+        <p><strong>Broader Terms:</strong> ${broader.length ? broader.join(", ") : "None"}</p>
+        <p><strong>Narrower Terms:</strong> ${narrower.length ? narrower.join(", ") : "None"}</p>
+        <p><strong>Related Terms:</strong> ${related.length ? related.join(", ") : "None"}</p>
         <p><strong>USE FOR:</strong> ${alternativeLabels.length ? alternativeLabels.join(", ") : "None"}</p>
     `;
 }
