@@ -1,10 +1,11 @@
-Term,Alternative Label,Broader Term,Related Terms
-Animal,,,
-Mammal,,Animal,
-Bird,,Animal,
-Dog,,Mammal,
-Cat,,Mammal,
-Eagle,,Bird,
-Pigeon,Small Pigeon,Bird,Dog
-Golden Retriever,,Dog,
-Persian Cat,,Cat,
+Concept,Concept,Concept,Concept,Concept,Related Term,Use For
+Animal,,,,,,
+,Mammmal,,,,,
+,,Dog,,,,
+,,,Golden Retriever,,,Husky
+,,Cat,,,,
+,,,Persian Cat,,,
+,Bird,,,,,
+,,Eagle,,,,
+,,,Bald Eagle,,,American Eagle
+,,Parrot,,,,
