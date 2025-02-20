@@ -1,5 +1,4 @@
 let thesaurus = {}; // ✅ Global thesaurus object
-let lastKnownBroader = ""; // Track last known broader term
 
 async function loadCSV() {
     const csvURL = 'https://raw.githubusercontent.com/dchen077/LIS598ThesaurusViewer/main/thesaurus.csv';
@@ -22,37 +21,38 @@ function processCSV(csvText) {
     let headers = rows.shift(); // Remove header row
 
     thesaurus = {}; // Reset thesaurus object
-    let lastKnownBroader = null; // Track last known broader term
 
     rows.forEach(row => {
-        let broader = row[0]?.trim() || lastKnownBroader; // Use last known broader if empty
+        let broader = row[0]?.trim() || ""; 
         let narrower1 = row[1]?.trim() || "";
         let narrower2 = row[2]?.trim() || "";
         let narrower3 = row[3]?.trim() || "";
         let related = row[4]?.trim() || "";
         let alternativeLabel = row[5]?.trim() || ""; // USE FOR column
 
-        if (broader) {
-            if (!thesaurus[broader]) {
-                thesaurus[broader] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
-            }
-            lastKnownBroader = broader; // Update the last known broader term
-        }
-
-        function addNarrower(broader, narrower) {
+        function addTerm(broader, narrower) {
             if (narrower) {
                 if (!thesaurus[narrower]) {
                     thesaurus[narrower] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
                 }
                 thesaurus[narrower].broader.push(broader);
-                thesaurus[broader]?.narrower.push(narrower);
+                if (broader && thesaurus[broader]) {
+                    thesaurus[broader].narrower.push(narrower);
+                }
+            }
+        }
+
+        // Ensure broader term exists in thesaurus
+        if (broader) {
+            if (!thesaurus[broader]) {
+                thesaurus[broader] = { broader: [], narrower: [], related: [], alternativeLabels: [] };
             }
         }
 
         // Correctly assign broader-narrower relationships
-        addNarrower(broader, narrower1);
-        addNarrower(narrower1, narrower2);
-        addNarrower(narrower2, narrower3);
+        addTerm(broader, narrower1);
+        addTerm(narrower1, narrower2);
+        addTerm(narrower2, narrower3);
 
         // Add related terms
         if (related) {
@@ -86,9 +86,9 @@ function createHierarchyList(parent, level) {
 
     if (terms.length === 0) return "";
 
-    let content = "<ul>";
+    let content = "<ul style='padding-left: 20px;'>";
     terms.forEach(term => {
-        content += `<li style="margin-left: ${level * 15}px; cursor: pointer; color: blue;" onclick="showDetails('${term}')">${term}</li>`;
+        content += `<li style="padding-left: ${level * 15}px; cursor: pointer; color: blue;" onclick="showDetails('${term}')">${term}</li>`;
         content += createHierarchyList(term, level + 1); // Recursively build hierarchy
     });
     content += "</ul>";
@@ -106,7 +106,7 @@ function showDetails(term) {
 
     let { broader, narrower, related, alternativeLabels } = thesaurus[term];
     detailsContainer.innerHTML = `
-        <div class="term-title">${term}</div>
+        <div class="term-title" style="font-weight: bold;">${term}</div>
         <p><strong>Broader Terms:</strong> ${broader.length ? broader.join(", ") : "None"}</p>
         <p><strong>Narrower Terms:</strong> ${narrower.length ? narrower.join(", ") : "None"}</p>
         <p><strong>Related Terms:</strong> ${related.length ? related.join(", ") : "None"}</p>
