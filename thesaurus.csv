@@ -1,4 +1,4 @@
-const csvText = `Term,Alternative Label,Broader Term,Related Terms
+Term,Alternative Label,Broader Term,Related Terms
 Animal,,,
 Mammal,,Animal,
 Bird,,Animal,
