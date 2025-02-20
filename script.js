@@ -8,7 +8,7 @@ async function loadCSV() {
 
         const csvText = await response.text();
         console.log("✅ CSV Loaded Successfully!");
-        console.log("CSV Content:\n", csvText);  // ✅ Logs raw CSV content
+        console.log("CSV Content:\n", csvText);  // ✅ Logs raw CSV data
 
         processCSV(csvText);
     } catch (error) {
@@ -18,16 +18,24 @@ async function loadCSV() {
 }
 
 function processCSV(csvText) {
-    let rows = csvText.trim().split("\n").map(row => row.split(","));
-    let headers = rows.shift(); // Remove header row
+    console.log("Processing CSV Data...");
+
+    // Ensure CSV is split properly
+    let rows = csvText.trim().split(/\r?\n/).map(row => row.split(","));
+    console.log("Parsed Rows:", rows);
+
+    let headers = rows.shift();
     let thesaurus = {};
 
-    // Step 1: Parse CSV into a hierarchical structure
     rows.forEach(row => {
+        if (row.length < 1) return; // Ignore empty rows
+
         let term = row[0]?.trim();
         let alternativeLabel = row[1]?.trim() || "None";
         let broader = row[2]?.trim() || null;
         let relatedTerms = row[3]?.trim() ? row[3].split(";").map(t => t.trim()) : [];
+
+        console.log(`Processing Term: ${term}, Broader: ${broader}, Related: ${relatedTerms}`);
 
         if (!term) return;
 
@@ -53,12 +61,12 @@ function processCSV(csvText) {
         }
     });
 
-    // Step 2: Identify root terms (terms with no Broader Term)
+    console.log("✅ Final Thesaurus Structure:", thesaurus);
+
     let rootTerms = Object.values(thesaurus).filter(term => !term.broader);
     
-    // Step 3: Display hierarchy
     let container = document.getElementById("thesaurus-view");
-    container.innerHTML = ""; // ✅ Clears "Loading..." text at the right time
+    container.innerHTML = "";
     displayHierarchy(rootTerms, thesaurus, container, 0);
 }
 
