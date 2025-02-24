@@ -1,11 +1,11 @@
-Concept1,Concept2,Concept3,Concept4,Concept5
-Animal,,,,
-,Mammmal,,,
-,,Dog,,
-,,,Golden Retriever,
-,,Cat,,
-,,,Persian Cat,
-,Bird,,,
-,,Eagle,,
-,,,Bald Eagle,
-,,Parrot,,
+Concept1,Concept2,Concept3,Concept4
+Animal,,,
+,Mammmal,,
+,,Dog,
+,,,Golden Retriever
+,,Cat,
+,,,Persian Cat
+,Bird,,
+,,Eagle,
+,,,Bald Eagle
+,,Parrot,
