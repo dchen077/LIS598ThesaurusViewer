@@ -1,18 +1,143 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thesaurus Viewer</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>Collapsible CSV Hierarchical List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    ul {
+      list-style-type: none;
+      padding-left: 20px;
+    }
+    li {
+      margin: 5px 0;
+    }
+    .toggle-label {
+      cursor: pointer;
+      user-select: none;
+    }
+    .toggle-icon {
+      margin-right: 5px;
+      font-weight: bold;
+    }
+    /* Hide the children by default */
+    .children {
+      display: none;
+    }
+    /* When the parent li has the 'expanded' class, show its children */
+    li.expanded > .children {
+      display: block;
+    }
+  </style>
 </head>
 <body>
-    <h1>Thesaurus Viewer</h1>
-    <div class="container">
-        <div id="hierarchy-view" class="panel"></div>
-        <div id="details-view" class="panel">Select a term to see details.</div>
-    </div>
+  <h1>Collapsible CSV Hierarchical List</h1>
+  <p>This page automatically loads a CSV file from GitHub and displays its hierarchical structure. Click on any term with nested items to toggle its children.</p>
+  <div id="output"></div>
 
-    <script src="script.js"></script>
+  <script>
+    // Replace this URL with the raw URL of your CSV file hosted on GitHub.
+    const csvUrl = 'https://raw.githubusercontent.com/dchen077/LIS598ThesaurusViewer/refs/heads/main/thesaurus.csv';
+
+    // Fetch the CSV file from the GitHub raw URL.
+    fetch(csvUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch CSV file');
+        }
+        return response.text();
+      })
+      .then(text => {
+        const rows = parseCSV(text);
+        if (rows.length === 0) return;
+
+        // Remove header row (defines hierarchy levels)
+        rows.shift();
+
+        // Build a hierarchical tree from the CSV rows
+        const tree = {};
+        rows.forEach(row => {
+          let currentLevel = tree;
+          row.forEach(cell => {
+            cell = cell.trim();
+            if (cell) {
+              if (!currentLevel[cell]) {
+                currentLevel[cell] = {};
+              }
+              currentLevel = currentLevel[cell];
+            }
+          });
+        });
+
+        // Render the tree as a collapsible nested HTML list.
+        const outputDiv = document.getElementById('output');
+        outputDiv.innerHTML = ''; // Clear any previous content.
+        outputDiv.appendChild(createList(tree));
+      })
+      .catch(err => console.error('Error fetching CSV file:', err));
+
+    // Simple CSV parser that splits text into rows and cells.
+    // This parser assumes that cells do not contain commas within quoted strings.
+    function parseCSV(text) {
+      const lines = text.split(/\r?\n/);
+      return lines
+        .map(line => line.split(','))
+        .filter(row => row.some(cell => cell.trim() !== ""));
+    }
+
+    // Recursively creates a nested unordered list (<ul>) from the tree object,
+    // adding toggling functionality for items with children.
+    function createList(tree) {
+      const ul = document.createElement('ul');
+      for (const key in tree) {
+        if (tree.hasOwnProperty(key)) {
+          const li = document.createElement('li');
+          const hasChildren = Object.keys(tree[key]).length > 0;
+
+          // Create the toggleable label.
+          const span = document.createElement('span');
+          span.classList.add('toggle-label');
+          if (hasChildren) {
+            // Create and add the toggle icon.
+            const icon = document.createElement('span');
+            icon.textContent = '[+]';
+            icon.classList.add('toggle-icon');
+            span.appendChild(icon);
+            span.appendChild(document.createTextNode(' ' + key));
+          } else {
+            span.textContent = key;
+          }
+          li.appendChild(span);
+
+          if (hasChildren) {
+            // Recursively build the child list.
+            const childUl = createList(tree[key]);
+            // Wrap child list in a container for toggling.
+            const childContainer = document.createElement('div');
+            childContainer.classList.add('children');
+            childContainer.appendChild(childUl);
+            li.appendChild(childContainer);
+
+            // Toggle the 'expanded' class on the list item when clicked.
+            span.addEventListener('click', function(e) {
+              e.stopPropagation(); // Prevent event bubbling.
+              li.classList.toggle('expanded');
+              const iconSpan = span.querySelector('.toggle-icon');
+              if (li.classList.contains('expanded')) {
+                iconSpan.textContent = '[-]';
+              } else {
+                iconSpan.textContent = '[+]';
+              }
+            });
+          }
+
+          ul.appendChild(li);
+        }
+      }
+      return ul;
+    }</script>
 </body>
 </html>
