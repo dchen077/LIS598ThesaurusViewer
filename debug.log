@@ -1,0 +1,5 @@
+[0223/214526.341:ERROR:viz_main_impl.cc(162)] Exiting GPU process due to errors during initialization
+[0223/214526.511:ERROR:viz_main_impl.cc(162)] Exiting GPU process due to errors during initialization
+[0223/214526.657:ERROR:gpu_init.cc(441)] Passthrough is not supported, GL is disabled
+[0223/214527.133:INFO:CONSOLE(28)] "Fetch API cannot load file:///C:/Users/daoyi/source/repos/dchen077/LIS598ThesaurusViewer/thesaurus.csv. URL scheme "file" is not supported.", source: file:///C:/Users/daoyi/source/repos/dchen077/LIS598ThesaurusViewer/index.html (28)
+[0223/214527.133:INFO:CONSOLE(62)] "Error fetching CSV file: TypeError: Failed to fetch", source: file:///C:/Users/daoyi/source/repos/dchen077/LIS598ThesaurusViewer/index.html (62)

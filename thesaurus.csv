@@ -1,11 +1,11 @@
-Broader Term,Narrower Term 1,Narrower Term 2,Narrower Term 3,Narrower Term 4,Related Term,USE FOR
-Animal,,,,,,
-,Mammmal,,,,,
-,,Dog,,,,
-,,,Golden Retriever,,,Husky
-,,Cat,,,,
-,,,Persian Cat,,,
-,Bird,,,,,
-,,Eagle,,,,
-,,,Bald Eagle,,,American Eagle
-,,Parrot,,,,
+Concept1,Concept2,Concept3,Concept4
+Animal,,,
+,Mammmal,,
+,,Dog,
+,,,Golden Retriever
+,,Cat,
+,,,Persian Cat
+,Bird,,
+,,Eagle,
+,,,Bald Eagle
+,,Parrot,
