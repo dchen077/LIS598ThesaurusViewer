@@ -1,40 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Hard-Coded CSV from GitHub to Tree View</title>
     <style>
-        ul, #myUL {
-            list-style-type: none;
-        }
-
-        #myUL {
-            margin: 0;
-            padding: 0;
-        }
-
+        /* Basic styling for the tree view */
         .caret {
             cursor: pointer;
-            -webkit-user-select: none; /* Safari 3.1+ */
-            -moz-user-select: none; /* Firefox 2+ */
-            -ms-user-select: none; /* IE 10+ */
             user-select: none;
-        }
-
-            .caret::before {
-                content: "\25B6";
-                color: black;
-                display: inline-block;
-                margin-right: 6px;
-            }
-
-        .caret-down::before {
-            -ms-transform: rotate(90deg); /* IE 9 */
-            -webkit-transform: rotate(90deg); /* Safari */
-            ' transform: rotate(90deg);
         }
 
         .nested {
             display: none;
+            list-style-type: none;
+            margin-left: 20px;
+            padding-left: 0;
+        }
+
+        .caret::before {
+            content: "\25B6"; /* right-pointing arrow */
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .caret-down::before {
+            transform: rotate(90deg); /* down arrow */
         }
 
         .active {
@@ -43,50 +33,102 @@
     </style>
 </head>
 <body>
+    <h2>CSV from GitHub to Tree View</h2>
+    <div id="treeContainer"></div>
 
-    <h2>Tree View</h2>
-    <p>A tree view represents a hierarchical view of information, where each item can have a number of subitems.</p>
-    <p>Click on the arrow(s) to open or close the tree branches.</p>
+    <script>// Hard-coded GitHub raw CSV URL.
+    const csvUrl = "https://raw.githubusercontent.com/dchen077/LIS598ThesaurusViewer/refs/heads/main/thesaurus.csv";
 
-    <ul id="myUL">
-        <li>
-            <span class="caret">Animal</span>
-            <ul class="nested">
-                <li>
-                    <span class="caret">Mammal</span>
-                    <ul class="nested">
-                        <li>
-                            <span class="caret">Dog</span>
-                            <ul class="nested">
-                                <li>Golden Retriever</li>
-                            </ul>
-                        </li>
-                        <li>
-                            <span class="caret">Cat</span>
-                            <ul class="nested">
-                                <li>Persian Cat</li>
-                            </ul>
-                        </li>
-                <li>
-                    <span class="caret">Bird</span>
-                    <ul class="nested">
-                        <li>Eagle</li>
-                    </ul>
-                </li>
-            </ul>
-    </ul>
+    // A simple CSV parser that splits on newlines and commas.
+    function parseCSV(csvText) {
+      const lines = csvText.split(/\r?\n/).filter(line => line.trim() !== '');
+      return lines.map(line => line.split(','));
+    }
 
-    <script>
-var toggler = document.getElementsByClassName("caret");
-var i;
+    // Build a tree object from CSV data.
+    function buildTree(data) {
+      const tree = {};
+      // Skip header if it contains "Concept"
+      let startIndex = 0;
+      if (data.length && data[0].some(cell => cell.toLowerCase().includes("Concept"))) {
+        startIndex = 1;
+      }
+      for (let i = startIndex; i < data.length; i++) {
+        let current = tree;
+        data[i].forEach(item => {
+          if (!item) return; // Skip empty cells.
+          if (!current[item]) {
+            current[item] = {};
+          }
+          current = current[item];
+        });
+      }
+      return tree;
+    }
 
-for (i = 0; i < toggler.length; i++) {
-  toggler[i].addEventListener("click", function() {
-    this.parentElement.querySelector(".nested").classList.toggle("active");
-    this.classList.toggle("caret-down");
-  });
-}
-    </script>
+    // Recursively create a nested UL for the tree view.
+    function createTreeView(node) {
+      const ul = document.createElement('ul');
+      for (const key in node) {
+        const li = document.createElement('li');
+        if (Object.keys(node[key]).length > 0) {
+          const span = document.createElement('span');
+          span.classList.add('caret');
+          span.textContent = key;
+          li.appendChild(span);
+          li.appendChild(createTreeView(node[key]));
+        } else {
+          li.textContent = key;
+        }
+        ul.appendChild(li);
+      }
+      ul.classList.add('nested');
+      return ul;
+    }
 
+    // Add toggle functionality to expand/collapse nodes.
+    function addToggleFunctionality() {
+      const togglers = document.getElementsByClassName("caret");
+      for (let i = 0; i < togglers.length; i++) {
+        togglers[i].addEventListener("click", function() {
+          const nested = this.parentElement.querySelector(".nested");
+          if (nested) {
+            nested.classList.toggle("active");
+            this.classList.toggle("caret-down");
+          }
+        });
+      }
+    }
+
+    // Load CSV from GitHub and display the tree.
+    function loadCSVFromGitHub(url) {
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.text();
+        })
+        .then(csvText => {
+          const data = parseCSV(csvText);
+          const treeData = buildTree(data);
+          const treeContainer = document.getElementById('treeContainer');
+          treeContainer.innerHTML = "";  // Clear any previous content.
+          const treeView = createTreeView(treeData);
+          // Make the top-level UL visible.
+          treeView.classList.remove("nested");
+          treeContainer.appendChild(treeView);
+          addToggleFunctionality();
+        })
+        .catch(error => {
+          console.error("Error fetching CSV file:", error);
+          document.getElementById('treeContainer').textContent = "Error fetching CSV file: " + error.message;
+        });
+    }
+
+    // On page load, fetch and display the CSV data.
+    window.addEventListener("load", function() {
+      loadCSVFromGitHub(csvUrl);
+    });</script>
 </body>
 </html>
