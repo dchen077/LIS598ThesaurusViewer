@@ -12,12 +12,12 @@ Created in LucidChart
 	b. ChatGPT initially gave two solutions, frontend or backened. Do not want to deal with SQL server. That is way beyond my scope and brain power in a couple weeks. 
 2. Attempt Failed: Asking ChatGPT to parse the csv file and create a hierarchical list based on the term relationships.
 	a. If the code gets too long, ChatGPT only reads the first 1000 or sometimes 2000 characters. Second, screenshoting it the result and telling it what's wrong sometimes or often lead to looping the same mistake as if it ignored my error report.
-	b.When ChatGPT says it understands BT and NT after explaining the concept relationships. It doesn't. The code it generate is not correct.
+	b. When ChatGPT says it understands BT and NT after explaining the concept relationships. It doesn't. The code it generate is not correct.
 
-*2-23-2025: Baby Android Steps*<br>
+*2-23-2025: Baby Android Steps: Successful End Node Only Hierarchical List for Now*<br>
 Main goal: How to correctly parse the csv.file and indicate the relationships between the terms. Correctly display a hierarchical list first.<br>
 1. Feeding ChatGPT the basic javascript code for a tree view from https://www.w3schools.com/howto/howto_js_treeview.asp
-2. Asking ChatGPT to create a csv.file based on this basic javascript. The csv.file repeats BTs but one step at a time.
+2. Asking ChatGPT to create a csv.file based on this basic javascript. The csv.file is end node only but one step at a time.
 3. Asking ChatGPT to create a javascript that can parse similar structured csv.file and create a tree view based on that. Verify the code by testing it myself, feeding it to new ChatGPT conversation and feeding it to CoPilot (CoPilot said ChatGPT did a "pretty nifty job.")
 4. Simplify the csv file to only include hierarchical concepts. Temporarilly omits related terms and use for.  
 5. Conclusion: Forget about explaining what BT and NT are. Speak the language of the AI. 

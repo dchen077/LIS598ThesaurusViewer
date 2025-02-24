@@ -30,6 +30,14 @@
         .active {
             display: block;
         }
+        ul, li
+
+        {
+            list-style-type: none; /* Remove bullet points */
+            margin: 0;
+            padding: 0;
+        }
+        
     </style>
 </head>
 <body>
@@ -37,7 +45,7 @@
     <div id="treeContainer"></div>
 
     <script>// Hard-coded GitHub raw CSV URL.
-    const csvUrl = "https://raw.githubusercontent.com/dchen077/LIS598ThesaurusViewer/refs/heads/main/thesaurus.csv";
+    const csvUrl = "https://raw.githubusercontent.com/dchen077/LIS598ThesaurusViewer/refs/heads/main/dataset/transportation.csv";
 
     // A simple CSV parser that splits on newlines and commas.
     function parseCSV(csvText) {
@@ -50,7 +58,7 @@
       const tree = {};
       // Skip header if it contains "Concept"
       let startIndex = 0;
-      if (data.length && data[0].some(cell => cell.toLowerCase().includes("Concept"))) {
+      if (data.length && data[0].some(cell => cell.toLowerCase().includes("concept"))) {
         startIndex = 1;
       }
       for (let i = startIndex; i < data.length; i++) {
