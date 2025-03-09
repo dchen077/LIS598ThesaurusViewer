@@ -2,14 +2,46 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Hard-Coded CSV from GitHub to Tree View</title>
+    <title>Filtered CSV Tree View</title>
     <style>
-        /* Basic styling for the tree view */
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #container {
+            display: flex;
+            width: 100%;
+        }
+
+        #treeContainer {
+            width: 30%;
+            overflow-y: auto;
+            border-right: 2px solid #ddd;
+            padding: 10px;
+            background: #f8f9fa;
+        }
+
+        #content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
         .caret {
             cursor: pointer;
             user-select: none;
+            color: blue;
+            text-decoration: underline;
         }
 
+            /* Remove triangle indicator */
+            .caret::before {
+                content: ""; /* Removes the arrow */
+            }
+
+        /* Ensure nested lists still work */
         .nested {
             display: none;
             list-style-type: none;
@@ -17,126 +49,218 @@
             padding-left: 0;
         }
 
-        .caret::before {
-            content: "\25B6"; /* right-pointing arrow */
-            display: inline-block;
-            margin-right: 6px;
-        }
-
-        .caret-down::before {
-            transform: rotate(90deg); /* down arrow */
-        }
-
+        /* Keep active toggle behavior */
         .active {
             display: block;
         }
-        ul, li
 
-        {
-            list-style-type: none; /* Remove bullet points */
+
+        ul, li {
+            list-style-type: none;
             margin: 0;
             padding: 0;
         }
-        
     </style>
 </head>
 <body>
-    <h2>CSV from GitHub to Tree View</h2>
-    <div id="treeContainer"></div>
+    <div id="container">
+        <div id="treeContainer"></div>
+        <div id="content">
+            <h2>Details Panel</h2>
+            <p>Select an item from the tree to view details here.</p>
+        </div>
+    </div>
 
-    <script>// Hard-coded GitHub raw CSV URL.
-    const csvUrl = "https://raw.githubusercontent.com/dchen077/LIS598ThesaurusViewer/refs/heads/main/dataset/transportation.csv";
+    <script>
+        const csvUrl = "https://raw.githubusercontent.com/dchen077/LIS598ThesaurusViewer/refs/heads/main/dataset/transportation.test.csv";
 
-    // A simple CSV parser that splits on newlines and commas.
-    function parseCSV(csvText) {
-      const lines = csvText.split(/\r?\n/).filter(line => line.trim() !== '');
-      return lines.map(line => line.split(','));
-    }
-
-    // Build a tree object from CSV data.
-    function buildTree(data) {
-      const tree = {};
-      // Skip header if it contains "Concept"
-      let startIndex = 0;
-      if (data.length && data[0].some(cell => cell.toLowerCase().includes("concept"))) {
-        startIndex = 1;
-      }
-      for (let i = startIndex; i < data.length; i++) {
-        let current = tree;
-        data[i].forEach(item => {
-          if (!item) return; // Skip empty cells.
-          if (!current[item]) {
-            current[item] = {};
-          }
-          current = current[item];
-        });
-      }
-      return tree;
-    }
-
-    // Recursively create a nested UL for the tree view.
-    function createTreeView(node) {
-      const ul = document.createElement('ul');
-      for (const key in node) {
-        const li = document.createElement('li');
-        if (Object.keys(node[key]).length > 0) {
-          const span = document.createElement('span');
-          span.classList.add('caret');
-          span.textContent = key;
-          li.appendChild(span);
-          li.appendChild(createTreeView(node[key]));
-        } else {
-          li.textContent = key;
+        function parseCSV(csvText) {
+            const lines = csvText.split(/\r?\n/).filter(line => line.trim() !== '');
+            return lines.map(line => line.split(',').map(cell => cell.trim()));
         }
-        ul.appendChild(li);
-      }
-      ul.classList.add('nested');
-      return ul;
-    }
 
-    // Add toggle functionality to expand/collapse nodes.
-    function addToggleFunctionality() {
-      const togglers = document.getElementsByClassName("caret");
-      for (let i = 0; i < togglers.length; i++) {
-        togglers[i].addEventListener("click", function() {
-          const nested = this.parentElement.querySelector(".nested");
-          if (nested) {
-            nested.classList.toggle("active");
-            this.classList.toggle("caret-down");
-          }
+        function buildFilteredTree(data) {
+            const tree = {};
+            let startIndex = 0;
+
+            if (data.length && data[0].some(cell => cell.toLowerCase().includes("concept"))) {
+                startIndex = 1;
+            }
+
+            for (let i = startIndex; i < data.length; i++) {
+                let current = tree;
+                let lastFilledIndex = data[i].length - 1;
+                while (lastFilledIndex >= 0 && !data[i][lastFilledIndex]) {
+                    lastFilledIndex--;
+                }
+
+                if (lastFilledIndex < 0) continue;
+
+                for (let j = 0; j < lastFilledIndex; j++) {
+                    if (!data[i][j]) continue;
+                    if (!current[data[i][j]]) {
+                        current[data[i][j]] = {};
+                    }
+                    current = current[data[i][j]];
+                }
+
+                if (data[i][lastFilledIndex]) {
+                    current[data[i][lastFilledIndex]] = null;
+                }
+            }
+            return tree;
+        }
+
+        function createTreeView(node, broaderTerms = [], data) {
+            const ul = document.createElement('ul');
+            for (const key in node) {
+                const li = document.createElement('li');
+                const newBroaderTerms = [...broaderTerms, key];
+
+                if (node[key] !== null) {
+                    const span = document.createElement('span');
+                    span.classList.add('caret');
+                    span.textContent = key;
+                    span.addEventListener("click", function () {
+                        updateDetailsPanel(key, newBroaderTerms, data);
+                    });
+                    li.appendChild(span);
+                    li.appendChild(createTreeView(node[key], newBroaderTerms, data));
+                } else {
+                    li.textContent = key;
+                    li.addEventListener("click", function () {
+                        updateDetailsPanel(key, newBroaderTerms, data);
+                    });
+                }
+                ul.appendChild(li);
+            }
+            ul.classList.add('nested');
+            return ul;
+        }
+
+        function findNarrowerTerms(data, term) {
+            const narrowerTerms = new Set();
+
+            for (let i = 1; i < data.length; i++) {
+                const row = data[i];
+
+                // Find the last non-empty column (the end node)
+                let lastIndex = row.length - 1;
+                while (lastIndex >= 0 && !row[lastIndex]) {
+                    lastIndex--;
+                }
+
+                if (lastIndex <= 0) continue; // If there's no valid broader term
+
+                let broaderIndex = lastIndex - 1; // Second-to-last column dynamically
+
+                if (row[broaderIndex] === term && row[lastIndex]) {
+                    narrowerTerms.add(row[lastIndex]); // Add the end node as a narrower term
+                }
+            }
+
+            return Array.from(narrowerTerms);
+        }
+
+        function findRelatedTerms(data, term) {
+            for (let i = 1; i < data.length; i++) {
+                const row = data[i];
+
+                // Find the last non-empty column (the end node)
+                let lastIndex = row.length - 2; // Assume the last column is "Related Terms"
+                while (lastIndex >= 0 && !row[lastIndex]) {
+                    lastIndex--;
+                }
+
+                if (lastIndex >= 0 && row[lastIndex] === term) {
+                    const relatedTerm = row[row.length - 1]; // Last column contains related terms
+                    if (relatedTerm) {
+                        return relatedTerm.split(";").map(rt => rt.trim()); // Split multiple values by semicolon
+                    }
+                }
+            }
+            return [];
+        }
+
+        function navigateToTerm(term) {
+            // Find all elements in the tree that match the term
+            const treeItems = document.querySelectorAll("#treeContainer li, #treeContainer .caret");
+
+            for (let item of treeItems) {
+                if (item.textContent.trim() === term) {
+                    item.click(); // Simulate a click to open the term's details
+                    item.scrollIntoView({ behavior: "smooth", block: "center" }); // Scroll to the term
+                    break;
+                }
+            }
+        }
+
+        function updateDetailsPanel(term, broaderTerms, data) {
+            const contentDiv = document.getElementById("content");
+
+            // If no broader terms exist, show "None"
+            let broaderText = broaderTerms.length > 1 ? broaderTerms.slice(0, -1).join(", ") : "None";
+
+            contentDiv.innerHTML = `<h2>${term}</h2><p><strong>Broader Terms:</strong> ${broaderText}</p>`;
+
+            // Find Narrower Terms
+            const narrowerTerms = findNarrowerTerms(data, term);
+            if (narrowerTerms.length > 0) {
+                contentDiv.innerHTML += `<p><strong>Narrower Terms:</strong> ${narrowerTerms.join(", ")}</p>`;
+            } else {
+                contentDiv.innerHTML += `<p><strong>Narrower Terms:</strong> None</p>`;
+            }
+
+            // Find Related Terms
+            const relatedTerms = findRelatedTerms(data, term);
+            if (relatedTerms.length > 0) {
+                let relatedTermsHTML = relatedTerms
+                    .map(rt => `<span class="related-term" onclick="navigateToTerm('${rt}')">${rt}</span>`)
+                    .join(", ");
+                contentDiv.innerHTML += `<p><strong>Related Terms:</strong> ${relatedTermsHTML}</p>`;
+            }
+        }
+
+        function addToggleFunctionality() {
+            const togglers = document.getElementsByClassName("caret");
+            for (let i = 0; i < togglers.length; i++) {
+                togglers[i].addEventListener("click", function () {
+                    const nested = this.parentElement.querySelector(".nested");
+                    if (nested) {
+                        nested.classList.toggle("active");
+                    }
+                });
+            }
+        }
+
+        function loadCSVFromGitHub(url) {
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.text();
+                })
+                .then(csvText => {
+                    const data = parseCSV(csvText);
+                    const treeData = buildFilteredTree(data);
+                    const treeContainer = document.getElementById('treeContainer');
+                    treeContainer.innerHTML = "";
+                    const treeView = createTreeView(treeData, [], data);
+                    treeView.classList.remove("nested");
+                    treeContainer.appendChild(treeView);
+                    addToggleFunctionality();
+                })
+                .catch(error => {
+                    console.error("Error fetching CSV file:", error);
+                    document.getElementById('treeContainer').textContent = "Error fetching CSV file: " + error.message;
+                });
+        }
+
+        window.addEventListener("load", function () {
+            loadCSVFromGitHub(csvUrl);
         });
-      }
-    }
-
-    // Load CSV from GitHub and display the tree.
-    function loadCSVFromGitHub(url) {
-      fetch(url)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.text();
-        })
-        .then(csvText => {
-          const data = parseCSV(csvText);
-          const treeData = buildTree(data);
-          const treeContainer = document.getElementById('treeContainer');
-          treeContainer.innerHTML = "";  // Clear any previous content.
-          const treeView = createTreeView(treeData);
-          // Make the top-level UL visible.
-          treeView.classList.remove("nested");
-          treeContainer.appendChild(treeView);
-          addToggleFunctionality();
-        })
-        .catch(error => {
-          console.error("Error fetching CSV file:", error);
-          document.getElementById('treeContainer').textContent = "Error fetching CSV file: " + error.message;
-        });
-    }
-
-    // On page load, fetch and display the CSV data.
-    window.addEventListener("load", function() {
-      loadCSVFromGitHub(csvUrl);
-    });</script>
+    </script>
 </body>
 </html>
+
