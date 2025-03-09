@@ -24,3 +24,4 @@ Main goal: How to correctly parse the csv.file and indicate the relationships be
 
 *3-9-2025*<br>
 1. Currently every cells needed to be filled out to correctly display a hierarchical list. Empty cells are displayed as N/A and seemed to cause issue.
+2. Then, I asked ChatGPT to recognize every term before the end node as the broader term of that end node. 
