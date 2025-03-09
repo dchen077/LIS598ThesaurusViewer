@@ -36,12 +36,6 @@
             text-decoration: underline;
         }
 
-            /* Remove triangle indicator */
-            .caret::before {
-                content: ""; /* Removes the arrow */
-            }
-
-        /* Ensure nested lists still work */
         .nested {
             display: none;
             list-style-type: none;
@@ -49,17 +43,16 @@
             padding-left: 0;
         }
 
-        /* Keep active toggle behavior */
         .active {
             display: block;
         }
-
 
         ul, li {
             list-style-type: none;
             margin: 0;
             padding: 0;
         }
+
     </style>
 </head>
 <body>
@@ -72,7 +65,7 @@
     </div>
 
     <script>
-        const csvUrl = "https://raw.githubusercontent.com/dchen077/LIS598ThesaurusViewer/refs/heads/main/dataset/transportation.test.csv";
+        const csvUrl = "https://raw.githubusercontent.com/dchen077/LIS598ThesaurusViewer/refs/heads/main/dataset/transportation.test3.csv";
 
         function parseCSV(csvText) {
             const lines = csvText.split(/\r?\n/).filter(line => line.trim() !== '');
@@ -89,7 +82,7 @@
 
             for (let i = startIndex; i < data.length; i++) {
                 let current = tree;
-                let lastFilledIndex = data[i].length - 1;
+                let lastFilledIndex = data[i].length - 2; // Exclude related terms column
                 while (lastFilledIndex >= 0 && !data[i][lastFilledIndex]) {
                     lastFilledIndex--;
                 }
@@ -144,18 +137,13 @@
             for (let i = 1; i < data.length; i++) {
                 const row = data[i];
 
-                // Find the last non-empty column (the end node)
-                let lastIndex = row.length - 1;
+                let lastIndex = row.length - 2;
                 while (lastIndex >= 0 && !row[lastIndex]) {
                     lastIndex--;
                 }
 
-                if (lastIndex <= 0) continue; // If there's no valid broader term
-
-                let broaderIndex = lastIndex - 1; // Second-to-last column dynamically
-
-                if (row[broaderIndex] === term && row[lastIndex]) {
-                    narrowerTerms.add(row[lastIndex]); // Add the end node as a narrower term
+                if (lastIndex > 0 && row[lastIndex - 1] === term) {
+                    narrowerTerms.add(row[lastIndex]);
                 }
             }
 
@@ -166,8 +154,7 @@
             for (let i = 1; i < data.length; i++) {
                 const row = data[i];
 
-                // Find the last non-empty column (the end node)
-                let lastIndex = row.length - 2; // Assume the last column is "Related Terms"
+                let lastIndex = row.length - 2;
                 while (lastIndex >= 0 && !row[lastIndex]) {
                     lastIndex--;
                 }
@@ -175,51 +162,59 @@
                 if (lastIndex >= 0 && row[lastIndex] === term) {
                     const relatedTerm = row[row.length - 1]; // Last column contains related terms
                     if (relatedTerm) {
-                        return relatedTerm.split(";").map(rt => rt.trim()); // Split multiple values by semicolon
+                        return relatedTerm.split("; ").map(rt => rt.trim()); // Properly split by ";"
                     }
                 }
             }
             return [];
         }
 
+        function updateDetailsPanel(term, broaderTerms, data) {
+            const contentDiv = document.getElementById("content");
+
+            // Make Broader Terms clickable
+            let broaderText = broaderTerms.length > 1
+                ? broaderTerms.slice(0, -1).map(bt => `<span class="navigatable-term" onclick="navigateToTerm('${bt.replace(/'/g, "\\'")}')">${bt}</span>`).join(", ")
+                : "None";
+
+            contentDiv.innerHTML = `<h2>${term}</h2><p><strong>Broader Terms:</strong> ${broaderText}</p>`;
+
+            // Make Narrower Terms clickable
+            const narrowerTerms = findNarrowerTerms(data, term);
+            if (narrowerTerms.length > 0) {
+                let narrowerText = narrowerTerms
+                    .map(nt => `<span class="navigatable-term" onclick="navigateToTerm('${nt.replace(/'/g, "\\'")}')">${nt}</span>`)
+                    .join(", ");
+                contentDiv.innerHTML += `<p><strong>Narrower Terms:</strong> ${narrowerText}</p>`;
+            } else {
+                contentDiv.innerHTML += `<p><strong>Narrower Terms:</strong> None</p>`;
+            }
+
+            // Make Related Terms clickable
+            const relatedTerms = findRelatedTerms(data, term);
+            if (relatedTerms.length > 0) {
+                let relatedTermsHTML = relatedTerms
+                    .flatMap(rt => rt.split(";").map(t => t.trim())) // Split by ";"
+                    .map(rt => `<span class="navigatable-term" onclick="navigateToTerm('${rt.replace(/'/g, "\\'")}')">${rt}</span>`)
+                    .join(", ");
+
+                contentDiv.innerHTML += `<p><strong>Related Terms:</strong> ${relatedTermsHTML}</p>`;
+            }
+        }
+
+
         function navigateToTerm(term) {
-            // Find all elements in the tree that match the term
             const treeItems = document.querySelectorAll("#treeContainer li, #treeContainer .caret");
 
             for (let item of treeItems) {
                 if (item.textContent.trim() === term) {
-                    item.click(); // Simulate a click to open the term's details
-                    item.scrollIntoView({ behavior: "smooth", block: "center" }); // Scroll to the term
+                    item.click();
+                    item.scrollIntoView({ behavior: "smooth", block: "center" });
                     break;
                 }
             }
         }
 
-        function updateDetailsPanel(term, broaderTerms, data) {
-            const contentDiv = document.getElementById("content");
-
-            // If no broader terms exist, show "None"
-            let broaderText = broaderTerms.length > 1 ? broaderTerms.slice(0, -1).join(", ") : "None";
-
-            contentDiv.innerHTML = `<h2>${term}</h2><p><strong>Broader Terms:</strong> ${broaderText}</p>`;
-
-            // Find Narrower Terms
-            const narrowerTerms = findNarrowerTerms(data, term);
-            if (narrowerTerms.length > 0) {
-                contentDiv.innerHTML += `<p><strong>Narrower Terms:</strong> ${narrowerTerms.join(", ")}</p>`;
-            } else {
-                contentDiv.innerHTML += `<p><strong>Narrower Terms:</strong> None</p>`;
-            }
-
-            // Find Related Terms
-            const relatedTerms = findRelatedTerms(data, term);
-            if (relatedTerms.length > 0) {
-                let relatedTermsHTML = relatedTerms
-                    .map(rt => `<span class="related-term" onclick="navigateToTerm('${rt}')">${rt}</span>`)
-                    .join(", ");
-                contentDiv.innerHTML += `<p><strong>Related Terms:</strong> ${relatedTermsHTML}</p>`;
-            }
-        }
 
         function addToggleFunctionality() {
             const togglers = document.getElementsByClassName("caret");
@@ -235,12 +230,7 @@
 
         function loadCSVFromGitHub(url) {
             fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Network response was not ok");
-                    }
-                    return response.text();
-                })
+                .then(response => response.text())
                 .then(csvText => {
                     const data = parseCSV(csvText);
                     const treeData = buildFilteredTree(data);
@@ -252,7 +242,6 @@
                     addToggleFunctionality();
                 })
                 .catch(error => {
-                    console.error("Error fetching CSV file:", error);
                     document.getElementById('treeContainer').textContent = "Error fetching CSV file: " + error.message;
                 });
         }
@@ -263,4 +252,5 @@
     </script>
 </body>
 </html>
+
 
