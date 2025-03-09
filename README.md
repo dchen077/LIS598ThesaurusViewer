@@ -20,4 +20,7 @@ Main goal: How to correctly parse the csv.file and indicate the relationships be
 2. Asking ChatGPT to create a csv.file based on this basic javascript. The csv.file is end node only but one step at a time.
 3. Asking ChatGPT to create a javascript that can parse similar structured csv.file and create a tree view based on that. Verify the code by testing it myself, feeding it to new ChatGPT conversation and feeding it to CoPilot (CoPilot said ChatGPT did a "pretty nifty job.")
 4. Simplify the csv file to only include hierarchical concepts. Temporarilly omits related terms and use for.  
-5. Conclusion: Forget about explaining what BT and NT are. Speak the language of the AI. 
+5. Conclusion: Forget about explaining what BT and NT are. Speak the language of the AI.
+
+*3-9-2025*<br>
+1. Currently every cells needed to be filled out to correctly display a hierarchical list. Empty cells are displayed as N/A and seemed to cause issue.
