@@ -16,11 +16,11 @@ body {
     background-repeat: no-repeat; /* Prevents repeating */
 }
 
+
 #container {
     display: flex;
     width: 80vw; /* Scales to 80% of the viewport width */
     height: 80vh; /* Scales to 80% of the viewport height */
-    border: 2px solid #ddd;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     overflow: hidden; /* Prevents double scrollbars */
 
@@ -42,7 +42,7 @@ body {
 
 #sprite-container {
     position: fixed;
-    bottom: 50px; /* Adjust spacing from bottom */
+    bottom: 60px; /* Adjust spacing from bottom */
     left: 5%;
     transform: translateX(-50%) scale(3); /* Center horizontally */
     width: 32px; /* Width of one frame */
@@ -64,7 +64,25 @@ body {
     /* Total width (64px * 6 frames) */
 }
 
-
+#speech-bubble {
+    position: fixed;
+    bottom: 10%; /* Adjust distance above sprite */
+    left: 230%;
+    transform: translateX(-50%);
+    background: white;
+    color: black;
+    padding: 5px 5px;
+    border-radius: 5px;
+    border: 1px solid mediumpurple;
+    font-size: 8px; /* Keeps the text size the same */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    margin-bottom: 1px; /* Adds spacing between the sprite and bubble */
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+    max-width: 150px; /* Makes it longer horizontally */
+    min-width: 80px;
+    text-align: center; /* Ensures text stays centered */
+}
 
 #content {
     flex-grow: 1;
