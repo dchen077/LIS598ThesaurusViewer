@@ -1,57 +1,48 @@
 body {
+    display: flex;
+    height: 100vh;
+    margin: 0;
     font-family: Arial, sans-serif;
 }
 
-.container {
+#container {
     display: flex;
-    gap: 20px;
+    width: 100%;
 }
 
-.panel {
-    width: 50%;
-    border: 1px solid #ccc;
+#treeContainer {
+    width: 30%;
+    overflow-y: auto;
+    border-right: 2px solid #ddd;
     padding: 10px;
+    background: #f8f9fa;
 }
 
-ul {
-    list-style-type: none;
-    padding-left: 20px; /* Proper indentation for hierarchy */
+#content {
+    flex-grow: 1;
+    padding: 20px;
 }
 
-/* Hierarchical list styling */
-li {
+.caret {
     cursor: pointer;
+    user-select: none;
     color: blue;
-    position: relative; /* Needed for the expand/collapse icon */
-}
-
-/* Hover effect */
-li:hover {
     text-decoration: underline;
 }
 
-/* Top-level term styling */
-.term-title {
-    font-weight: bold;
-    font-size: 1.2em;
-}
-
-/* Arrow indicators for expandable items */
-li:has(ul)::before {
-    content: "▶"; /* Collapsed arrow */
-    position: absolute;
-    left: -15px;
-    font-size: 12px;
-    color: #555;
-    transition: transform 0.3s ease-in-out;
-}
-
-/* Expanded arrow when sublist is visible */
-li:has(ul):hover::before {
-    transform: rotate(90deg);
-}
-
-/* Hide sublists initially (for JS-based expand/collapse feature) */
-ul ul {
+.nested {
     display: none;
+    list-style-type: none;
+    margin-left: 20px;
+    padding-left: 0;
+}
+
+.active {
+    display: block;
+}
+
+ul, li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
