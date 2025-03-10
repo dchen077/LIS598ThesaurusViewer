@@ -11,7 +11,7 @@ body {
     font-family: 'Jersey 10', sans-seri;
     font-size: 30px;
     background-image: url('assets/body.png');
-    background-size: cover; /* Ensures the image covers the entire container */
+    background-size: 100% 100%; /* Ensures the image covers the entire container */
     background-position: center; /* Centers the image */
     background-repeat: no-repeat; /* Prevents repeating */
 }
@@ -25,7 +25,7 @@ body {
     overflow: hidden; /* Prevents double scrollbars */
 
     background-image: url('assets/background.png');
-    background-size: cover; /* Ensures the image covers the entire container */
+    background-size: 100% 100%; /* Ensures the image covers the entire container */
     background-position: center; /* Centers the image */
     background-repeat: no-repeat; /* Prevents repeating */
 }
@@ -39,6 +39,32 @@ body {
     flex-shrink: 0; /* Keeps the left panel stable */
     border-color: saddlebrown;
 }
+
+#sprite-container {
+    position: fixed;
+    bottom: 50px; /* Adjust spacing from bottom */
+    left: 5%;
+    transform: translateX(-50%) scale(3); /* Center horizontally */
+    width: 32px; /* Width of one frame */
+    height: 48px; /* Height of one frame */
+    background: url('assets/witch_idle.png') no-repeat;
+    background-size: 100% auto; /* Ensures correct scaling */
+    background-position: 0 0; /* Start at first frame */
+    animation: play-sprite 1s steps(6) infinite; /* Smooth horizontal animation */
+}
+
+@keyframes play-sprite {
+    from {
+        background-position: 0px 0;
+    }
+
+    to {
+        background-position: 0 -288px;
+    }
+    /* Total width (64px * 6 frames) */
+}
+
+
 
 #content {
     flex-grow: 1;
