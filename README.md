@@ -25,4 +25,6 @@ Main goal: How to correctly parse the csv.file and indicate the relationships be
 *3-9-2025*<br>
 1. Currently every cells needed to be filled out to correctly display a hierarchical list. Empty cells are displayed as N/A and seemed to cause issue.
 2. Then, I asked ChatGPT to recognize every term before the end node as the broader term of that end node.
-3. Broader terms are easily displayed because data is populated in the same row. However, narrower terms provded to be an issue. 
+3. Broader terms are easily displayed because data is populated in the same row. However, narrower terms provded to be an issue.
+4. Narrower terms are displayed correctly.
+5. Stretch goal: Python code that automatically populates the emtpy cells so users don't have to do it themselves. 
