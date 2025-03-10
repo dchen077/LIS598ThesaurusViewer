@@ -9,8 +9,8 @@ body {
 
 #container {
     display: flex;
-    width: 70%;
-    max-width: 1200px;
+    width: 800px;  /* Set a fixed width for stability */
+    height: 600px;  /* Set a fixed height for stability */
     border: 2px solid #ddd;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
@@ -26,6 +26,7 @@ body {
 #content {
     flex-grow: 1;
     padding: 20px;
+    overflow-y: auto; /* Ensure the content can scroll if it overflows */
 }
 
 .caret {
