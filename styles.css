@@ -9,7 +9,7 @@ body {
 
 #container {
     display: flex;
-    width: 800px;  /* Set a fixed width for stability */
+    width: 1200px;  /* Set a fixed width for stability */
     height: 600px;  /* Set a fixed height for stability */
     border: 2px solid #ddd;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
