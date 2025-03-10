@@ -11,20 +11,13 @@
         <div id="treeContainer"></div>
         <div id="content">
             <h2>Details Panel</h2>
-            <p>Select a term from the hierarchical list on the left to view details here.</p>
+            <p>Select a term from the hierarchical list on the leftt to view details here.</p>
         </div>
     </div>
-    <div id="sprite-container">
-        <div id="speech-bubble">Bring me to the magical world of <a href="https://github.com/dchen077/LIS598ThesaurusViewer" target="_blank">GitHub</a>!</div>
-    </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script>
         const csvUrl = "https://raw.githubusercontent.com/dchen077/LIS598ThesaurusViewer/refs/heads/main/dataset/coffee.csv";
-
         let csvData;
-
-        // Function to parse CSV using PapaParse library
         function parseCSV(csvText) {
             const results = Papa.parse(csvText, {
                 header: false,
@@ -34,7 +27,6 @@
             return results.data;
         }
 
-        // Function to build a hierarchical tree from parsed CSV data
         function buildFilteredTree(data) {
             const tree = {};
             let startIndex = 0;
@@ -67,7 +59,6 @@
             return tree;
         }
 
-        // Function to create the hierarchical tree view and attach event listeners
         function createTreeView(node, broaderTerms = [], data) {
             const ul = document.createElement('ul');
             for (const key in node) {
@@ -79,14 +70,14 @@
                     span.classList.add('caret');
                     span.textContent = key;
                     span.addEventListener("click", function () {
-                        updateDetailsPanel(key, newBroaderTerms, data); // Update the details panel on click
+                        updateDetailsPanel(key, newBroaderTerms, data);
                     });
                     li.appendChild(span);
                     li.appendChild(createTreeView(node[key], newBroaderTerms, data));
                 } else {
                     li.textContent = key;
                     li.addEventListener("click", function () {
-                        updateDetailsPanel(key, newBroaderTerms, data); // Update the details panel on click
+                        updateDetailsPanel(key, newBroaderTerms, data);
                     });
                 }
                 ul.appendChild(li);
@@ -95,12 +86,12 @@
             return ul;
         }
 
-        // Function to find narrower terms for a given term
         function findNarrowerTerms(data, term) {
             const narrowerTerms = new Set();
 
             for (let i = 1; i < data.length; i++) {
                 const row = data[i];
+
                 let lastIndex = row.length - 2;
                 while (lastIndex >= 0 && !row[lastIndex]) {
                     lastIndex--;
@@ -110,19 +101,76 @@
                     narrowerTerms.add(row[lastIndex]);
                 }
             }
+
             return Array.from(narrowerTerms);
         }
 
-        // Function to update the details panel with broader terms and narrower terms
-        function updateDetailsPanel(key, broaderTerms, data) {
-            document.getElementById("content").innerHTML = `<h2>${key}</h2><p><strong>Broader Terms:</strong> ${broaderTerms.slice(0, -1).join(", ")}</p>`;
-            const narrowerTerms = findNarrowerTerms(data, key);
+        function findRelatedTerms(data, term) {
+            for (let i = 1; i < data.length; i++) {
+                const row = data[i];
+
+                let lastIndex = row.length - 2;
+                while (lastIndex >= 0 && !row[lastIndex]) {
+                    lastIndex--;
+                }
+
+                if (lastIndex >= 0 && row[lastIndex] === term) {
+                    const relatedTerm = row[row.length - 1]; // Last column contains related terms
+                    if (relatedTerm) {
+                        return relatedTerm.split("; ").map(rt => rt.trim()); // Properly split by ";"
+                    }
+                }
+            }
+            return [];
+        }
+
+        function updateDetailsPanel(term, broaderTerms, data) {
+            const contentDiv = document.getElementById("content");
+
+            // Make Broader Terms clickable
+            let broaderText = broaderTerms.length > 1
+                ? broaderTerms.slice(0, -1).map(bt => `<span class="navigatable-term" onclick="navigateToTerm('${bt.replace(/'/g, "\\'")}')">${bt}</span>`).join(", ")
+                : "None";
+
+            contentDiv.innerHTML = `<h2>${term}</h2><p><strong>Broader Terms:</strong> ${broaderText}</p>`;
+
+            // Make Narrower Terms clickable
+            const narrowerTerms = findNarrowerTerms(data, term);
             if (narrowerTerms.length > 0) {
-                document.getElementById("content").innerHTML += `<p><strong>Narrower Terms:</strong> ${narrowerTerms.join(", ")}</p>`;
+                let narrowerText = narrowerTerms
+                    .map(nt => `<span class="navigatable-term" onclick="navigateToTerm('${nt.replace(/'/g, "\\'")}')">${nt}</span>`)
+                    .join(", ");
+                contentDiv.innerHTML += `<p><strong>Narrower Terms:</strong> ${narrowerText}</p>`;
+            } else {
+                contentDiv.innerHTML += `<p><strong>Narrower Terms:</strong> None</p>`;
+            }
+
+            // Make Related Terms clickable
+            const relatedTerms = findRelatedTerms(data, term);
+            if (relatedTerms.length > 0) {
+                let relatedTermsHTML = relatedTerms
+                    .flatMap(rt => rt.split(";").map(t => t.trim())) // Split by ";"
+                    .map(rt => `<span class="navigatable-term" onclick="navigateToTerm('${rt.replace(/'/g, "\\'")}')">${rt}</span>`)
+                    .join(", ");
+
+                contentDiv.innerHTML += `<p><strong>Related Terms:</strong> ${relatedTermsHTML}</p>`;
             }
         }
 
-        // Function to add toggle functionality for the tree view
+
+        function navigateToTerm(term) {
+            const treeItems = document.querySelectorAll("#treeContainer li, #treeContainer .caret");
+
+            for (let item of treeItems) {
+                if (item.textContent.trim() === term) {
+                    item.click();
+                    item.scrollIntoView({ behavior: "smooth", block: "center" });
+                    break;
+                }
+            }
+        }
+
+
         function addToggleFunctionality() {
             const togglers = document.getElementsByClassName("caret");
             for (let i = 0; i < togglers.length; i++) {
@@ -130,22 +178,20 @@
                     const nested = this.parentElement.querySelector(".nested");
                     if (nested) {
                         nested.classList.toggle("active");
-                        this.classList.toggle("caret-down");
                     }
                 });
             }
         }
 
-        // Function to fetch CSV from GitHub and initialize the tree view
         function loadCSVFromGitHub(url) {
             fetch(url)
                 .then(response => response.text())
                 .then(csvText => {
-                    csvData = parseCSV(csvText); // Store parsed CSV data in global variable
+                    const csvData = parseCSV(csvText);
                     const treeData = buildFilteredTree(csvData);
                     const treeContainer = document.getElementById('treeContainer');
                     treeContainer.innerHTML = "";
-                    const treeView = createTreeView(treeData, [], csvData); // Pass the CSV data to createTreeView
+                    const treeView = createTreeView(treeData, [], csvData);
                     treeView.classList.remove("nested");
                     treeContainer.appendChild(treeView);
                     addToggleFunctionality();
@@ -155,7 +201,6 @@
                 });
         }
 
-        // Load CSV and initialize tree view on page load
         window.addEventListener("load", function () {
             loadCSVFromGitHub(csvUrl);
         });
