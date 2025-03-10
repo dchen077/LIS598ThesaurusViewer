@@ -30,5 +30,6 @@ Main goal: How to correctly parse the csv.file and indicate the relationships be
 4. Narrower terms are displayed correctly. The logic I conveyed to the AI is: "if end node A appears in second to last column in the row for end node B (in other words, the node before the end node), then display end node B as a narrower term for end node A in the detail panel on the right."
 5. I asked ChatGPT to add a function to find related terms. Related terms are easy because the corresponding value is on same row. If an end node has multiple related terms, it is separated by semi-colon and space, like this ```; ```
 6. Then, I asked ChatGPT to add a function that allow users to navigate to each broader, narrower, and related term in the hierarchy by clicking on them.
-7. USE FOR and Scope Notes can easily be added in the future with the same logic if I just need to add more values to the corresponding end node. 
+7. USE FOR and Scope Notes can easily be added in the future with the same logic if I just need to add more values to the corresponding end node.
+8. I spent sometime playing around with css styling and learning how to configure sprite files. Adding more work but it was rather fun. 
 9. Stretch goals: 1) Users can directly upload a csv file instead of hardcoding it in GitHub. 2) Python code that automatically populates the emtpy cells so users don't have to do it themselves. 3) Make it look pretty :)
