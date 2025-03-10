@@ -34,3 +34,8 @@ Main goal: How to correctly parse the csv.file and indicate the relationships be
 8. I spent sometime playing around with css styling and learning how to configure sprite files. Adding more work but it was rather fun.
 9. **Note to self:** reupload the original css styling sheet as the current one is for personal amusement and not very accessible. 
 10. Stretch goals: 1) Users can directly upload a csv file instead of hardcoding it in GitHub. 2) Python code that automatically populates the emtpy cells so users don't have to do it themselves. 3) Make it look pretty :)
+
+*Before Submission*<br>
+1. Create better documentation that outlines the structure of the csv.file
+2. Create AI-integration workflow chart.
+3. Accompanied written piece. 
