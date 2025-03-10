@@ -9,15 +9,15 @@ body {
 
 #container {
     display: flex;
-    width: 1800px;  /* Increased width for a longer container */
-    height: 800px;  /* Increased height for a longer container */
+    width: 1500px;  /* Increased width for a longer container */
+    height: 500px;  /* Increased height for a longer container */
     border: 2px solid #ddd;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     overflow: hidden; /* Prevents double scrollbars */
 }
 
 #treeContainer {
-    width: 500px; /* Fixed width instead of percentage */
+    width: 300px; /* Fixed width instead of percentage */
     height: 100%; /* Ensures it takes full height of container */
     overflow-y: auto;
     border-right: 2px solid #ddd;
