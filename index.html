@@ -3,58 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Filtered CSV Tree View</title>
-    <style>
-        body {
-            display: flex;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        #container {
-            display: flex;
-            width: 100%;
-        }
-
-        #treeContainer {
-            width: 30%;
-            overflow-y: auto;
-            border-right: 2px solid #ddd;
-            padding: 10px;
-            background: #f8f9fa;
-        }
-
-        #content {
-            flex-grow: 1;
-            padding: 20px;
-        }
-
-        .caret {
-            cursor: pointer;
-            user-select: none;
-            color: blue;
-            text-decoration: underline;
-        }
-
-        .nested {
-            display: none;
-            list-style-type: none;
-            margin-left: 20px;
-            padding-left: 0;
-        }
-
-        .active {
-            display: block;
-        }
-
-        ul, li {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
+    
 <body>
     <div id="container">
         <div id="treeContainer"></div>
