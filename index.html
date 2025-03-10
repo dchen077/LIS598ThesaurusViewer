@@ -66,7 +66,8 @@
         </div>
     </div>
 
-    <script>document.getElementById('csvFileInput').addEventListener('change', function(event) {
+    <script>
+        document.getElementById('csvFileInput').addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (!file) return;
 
@@ -147,6 +148,37 @@
             return ul;
         }
 
+        function updateDetailsPanel(term, broaderTerms, data) {
+            const contentDiv = document.getElementById("content");
+            const narrowerTerms = findNarrowerTerms(data, term);
+            const relatedTerms = findRelatedTerms(data, term);
+            contentDiv.innerHTML = `<h2>${term}</h2>
+                <p><strong>Broader Terms:</strong> ${broaderTerms.join(" > ")}</p>
+                <p><strong>Narrower Terms:</strong> ${narrowerTerms.join(", ") || "None"}</p>
+                <p><strong>Related Terms:</strong> ${relatedTerms.join(", ") || "None"}</p>`;
+        }
+
+        function findNarrowerTerms(data, term) {
+            const narrowerTerms = [];
+            for (let i = 1; i < data.length; i++) {
+                for (let j = 0; j < data[i].length - 1; j++) {
+                    if (data[i][j] === term && data[i][j + 1]) {
+                        narrowerTerms.push(data[i][j + 1]);
+                    }
+                }
+            }
+            return narrowerTerms;
+        }
+
+        function findRelatedTerms(data, term) {
+            for (let i = 1; i < data.length; i++) {
+                if (data[i].includes(term)) {
+                    return data[i][data[i].length - 1].split(';').map(rt => rt.trim());
+                }
+            }
+            return [];
+        }
+
         function addToggleFunctionality() {
             const togglers = document.getElementsByClassName("caret");
             for (let i = 0; i < togglers.length; i++) {
@@ -157,6 +189,8 @@
                     }
                 });
             }
-        }</script>
+        }
+    </script>
 </body>
 </html>
+
