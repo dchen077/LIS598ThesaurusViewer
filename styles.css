@@ -64,7 +64,7 @@ ul, li {
         height: 100vh;
     }
     #treeContainer {
-        width: 35%; /* Adjust based on available space */
+        width: 500px; /* Adjust based on available space */
     }
 }
 
