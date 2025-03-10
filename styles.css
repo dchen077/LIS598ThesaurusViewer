@@ -1,21 +1,40 @@
+/* Retro Video Game Styling */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 body {
+    background-image: url('assets/background.png'); /* Ensure the image path is correct */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-family: 'Press Start 2P', cursive;
+    color: #33ff33; /* Classic CRT green */
+    text-shadow: 2px 2px 4px black;
     display: flex;
     height: 100vh;
     margin: 0;
-    font-family: Arial, sans-serif;
 }
 
 #container {
     display: flex;
     width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    border: 8px solid #33ff33;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#treeContainer, #content {
+    border: 4px solid #ff0000;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.9);
+    box-shadow: 4px 4px 0px #00ff00; /* 8-bit offset effect */
 }
 
 #treeContainer {
     width: 30%;
     overflow-y: auto;
-    border-right: 2px solid #ddd;
+    border-right: 2px solid #ffcc00;
     padding: 10px;
-    background: #f8f9fa;
 }
 
 #content {
@@ -26,8 +45,9 @@ body {
 .caret {
     cursor: pointer;
     user-select: none;
-    color: blue;
-    text-decoration: underline;
+    color: #ffcc00;
+    text-decoration: none;
+    text-shadow: 2px 2px 4px black;
 }
 
 .nested {
@@ -45,4 +65,11 @@ ul, li {
     list-style-type: none;
     margin: 0;
     padding: 0;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
 }
