@@ -4,7 +4,7 @@
 **Design Concept Map**
 ![LIS598 - Page 1](https://github.com/user-attachments/assets/1f8e1209-1ff2-4e23-a12e-07cecc79cdc1)
 **AI-Integration Flowchart**
-![image](https://github.com/user-attachments/assets/66c6da2c-a8c3-42a7-8dd9-9549195f756f)
+![LIS598 - Page 2(1)](https://github.com/user-attachments/assets/64f22b50-9283-4a41-a445-3d9dcb3b104c)
 Created in LucidChart
 
 **Log**<br>
