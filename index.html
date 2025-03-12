@@ -20,7 +20,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script>
-        const csvUrl = "https://raw.githubusercontent.com/dchen077/LIS598ThesaurusViewer/refs/heads/main/dataset/coffee.csv";
+        const csvUrl = "https://raw.githubusercontent.com/dchen077/LIS598ThesaurusViewer/refs/heads/main/datasets/coffee_test.csv";
         let csvData;
         function parseCSV(csvText) {
             const results = Papa.parse(csvText, {
@@ -41,7 +41,7 @@
 
             for (let i = startIndex; i < data.length; i++) {
                 let current = tree;
-                let lastFilledIndex = data[i].length - 2; // Exclude related terms column
+                let lastFilledIndex = data[i].length - 3; // Exclude related terms column
                 while (lastFilledIndex >= 0 && !data[i][lastFilledIndex]) {
                     lastFilledIndex--;
                 }
@@ -113,19 +113,39 @@
             for (let i = 1; i < data.length; i++) {
                 const row = data[i];
 
-                let lastIndex = row.length - 2;
-                while (lastIndex >= 0 && !row[lastIndex]) {
-                    lastIndex--;
+                // Ensure the term is the last filled "Concept" column in this row
+                let lastFilledIndex = row.length - 3; // Exclude related terms column
+                while (lastFilledIndex >= 0 && !row[lastFilledIndex]) {
+                    lastFilledIndex--;
                 }
 
-                if (lastIndex >= 0 && row[lastIndex] === term) {
-                    const relatedTerm = row[row.length - 1]; // Last column contains related terms
-                    if (relatedTerm) {
-                        return relatedTerm.split("; ").map(rt => rt.trim()); // Properly split by ";"
+                // If this row's last concept matches the selected term
+                if (lastFilledIndex >= 0 && row[lastFilledIndex] === term) {
+                    const relatedTerm = row[row.length - 2]; // Second to last column
+                    if (relatedTerm && relatedTerm.trim() !== "") {
+                        return relatedTerm.split(";").map(rt => rt.trim()); // Split properly
                     }
                 }
             }
             return [];
+        }
+
+
+
+
+        function findDefinition(data, term) {
+            const definitionColumnIndex = data[0].findIndex(cell => cell.toLowerCase().includes("definition"));
+            if (definitionColumnIndex === -1) return "";
+
+            for (let i = 1; i < data.length; i++) {
+                const row = data[i];
+                let termIndex = row.findIndex(cell => cell === term);
+                if (termIndex !== -1) {
+                    let definition = row[definitionColumnIndex];
+                    return definition ? definition : "";
+                }
+            }
+            return "";
         }
 
         function updateDetailsPanel(term, broaderTerms, data) {
@@ -158,6 +178,11 @@
                     .join(", ");
 
                 contentDiv.innerHTML += `<p><strong>Related Terms:</strong> ${relatedTermsHTML}</p>`;
+            }
+
+            const definition = findDefinition(data, term);
+            if (definition && definition.trim() !== "") {
+                contentDiv.innerHTML += `<p><strong>Definition:</strong> ${definition}</p>`;
             }
         }
 
