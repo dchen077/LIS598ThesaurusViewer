@@ -1,0 +1,125 @@
+Concept 1,Concept 2,Concept 3,Concept 4,Concept 5,Concept 6,Definition
+Condiments,,,,,,
+Condiments,Sweeteners,,,,,Ingredients added to coffee drinks to make them taste sweeter.
+Condiments,Dairy & Alternatives,,,,,
+Condiments,Dairy & Alternatives,Ice cream,,,,
+Condiments,Dairy & Alternatives,Milk,,,,
+Condiments,Dairy & Alternatives,Milk,Froth,,,"Milk that has been aerated to create a foamy, airy texture."
+Condiments,Dairy & Alternatives,Creamers,,,,Dairy product often added to coffee.
+Condiments,Dairy & Alternatives,Milk alternatives,,,,
+Condiments,Spirits,,,,,Liquors or liqueurs added to coffee.
+Variables,,,,,,
+Variables,Compounds,,,,,The compounds of the coffee bean that are extracted during brewing.
+Variables,Compounds,Sugars,,,,"The sweetness, viscosity of coffee is also an essential factor in improving extraction. It is introduced to balance the unpleasant elements like bitterness and astringency."
+Variables,Compounds,Lipids,,,,"The lipid content of a brewed coffee plays an important role when perceiving mouthfeel. Lipids are a typical component found in coffee oils, which is a function of the composition of the bean and the conditions of extraction."
+Variables,Compounds,Acids,,,,Acidity is a vibrant sensation that brightens the taste of your coffee. You need to extract the right amount of it to avoid a dull and lifeless brew.
+Variables,Compounds,Caffeine,,,,A water-soluble compound that extract when brewing coffee.
+Variables,Brewing parameters,,,,,
+Variables,Brewing parameters,BAR,,,,Used to measure pressure in espresso machines.
+Variables,Brewing parameters,Golden rule,,,,The ideal extraction time and volume for a shot of espresso.
+Variables,Brewing parameters,TDS,,,,TDS is a measurement referring to the calculated number of coffee solids that have been extracted into the water.
+Variables,Brewing parameters,Brew yield,,,,The percentage in mass of fresh coffee grounds that is extracted into a brew after a cycle.
+Variables,Brewing parameters,Brew ratio,,,,The ratio of coffee to water in a brew.
+Variables,Brewing parameters,Brew strength,,,,The amount of total dissolved solids (TDS) in a brew.
+Cupping,,,,,,
+Cupping,Finish,,,,,Describes the sensory experience of coffee right as it is swallowed.
+Cupping,Flavor & Aroma,,,,,Terms used to describe the smell and taste of coffee.
+Cupping,Flavor & Aroma,Acidity (Flavor),,,,A primary coffee flavor sensation that is described as a pleasant snap or crispness. Often viewed as a desirable characteristic.
+Cupping,Flavor & Aroma,Bitterness,,,,"An unpleasant, sharp, disagreeable taste."
+Cupping,Body,,,,,A coffee&#39;s taste or mouth feel.
+Cupping,Body,Thin,,,,A brew prepared with too much water that lacks body and substance.
+Cupping,Body,Winey,,,,A taste reminiscent of wine flavor and body.
+Cupping,Body,Mellow,,,,"A taste that has a balanced body, is not too acidic or bitter, but is dense and rich."
+Cupping,Body,Rich,,,,"A full-bodied coffee that has a very developed body, flavor and high degree of aroma."
+Cupping,Fragrance,,,,,"Refers to the scent of dry coffee, such as whole beans or ground coffee."
+Equipment,,,,,,
+Equipment,Coffee making machines,,,,,A machine that brews any style of coffee.
+Equipment,Coffee making machines,Coffee makers,,,,A coffee making machine that creates a brew not in the espresso style.
+Equipment,Coffee making machines,Coffee makers,Manual coffee makers,,,A coffee maker that is worked by hand and not automatically or electronically.
+Equipment,Coffee making machines,Coffee makers,Manual coffee makers,French presses,,Brewing method that separates spent grounds from brewed coffee by pressing them to the bottom of the brewing receptacle with a mesh plunger.
+Equipment,Coffee making machines,Coffee makers,Manual coffee makers,Aeropress,,A specific brand of immersion-style coffee maker.
+Equipment,Coffee making machines,Coffee makers,Manual coffee makers,Pour-over (Equipment),,A brewing method that involves pouring hot water over a bed of coffee grounds.
+Equipment,Coffee making machines,Coffee makers,Manual coffee makers,Percolators,,A type of pot used for the brewing of coffee by continually cycling the boiling or nearly boiling brew through the grounds using gravity until the required strength is reached.
+Equipment,Coffee making machines,Coffee makers,Manual coffee makers,Percolators,Moka pots,Coffee maker that brews coffee by driving hot water up through ground coffee.
+Equipment,Coffee making machines,Coffee makers,Manual coffee makers,Cezve pots,,A type of pot used for brewing Turkish coffee.
+Equipment,Coffee making machines,Coffee makers,Home coffee brewers,,,An appliance used to brew coffee.
+Equipment,Coffee making machines,Coffee machine parts,,,,Machine parts that make up a coffee making machine.
+Equipment,Coffee making machines,Coffee machine parts,Filters,,,A cup-like component of a coffee machine that separates the grounds from the finished coffee and controls the water flow through the grounds.
+Equipment,Coffee making machines,Coffee machine parts,Filters,Portafilters,,"A filter for espresso machines, with a hand on the end that connects to it."
+Equipment,Coffee making machines,Coffee machine parts,Filters,Slurry,,A mix of coffee grounds and water produced inside a filter during brewing.
+Equipment,Coffee making machines,Coffee machine parts,Filters,Pucks,,bed of ground coffee placed on the filter in an espresso machine.
+Equipment,Coffee making machines,Coffee machine parts,Spouts,,,The part of an espresso machine that dispenses hot water.
+Equipment,Coffee making machines,Coffee machine parts,Steam wands,,,The part of an espresso machine that froths or heats milk.
+Equipment,Coffee making machines,Coffee machine parts,Steam wands,Non-automated steam wands,,A type of steam wand where the frothing is initiated and terminated manually
+Equipment,Coffee making machines,Coffee machine parts,Steam wands,Steam wand valve assemblies,,Part of a steam wand that controls the flow of steam from the boiler.
+Equipment,Coffee making machines,Coffee machine parts,Tampers,,,"A small, pestle-like device with a round, flat end used to distribute and compress the ground coffee inside the filter basket."
+Equipment,Coffee making machines,Coffee machine parts,Groups,,,A component of an espresso machine where you insert the portafilter when preparing to brew espresso.
+Equipment,Coffee making machines,Coffee machine parts,Groups,Dispersion screens,,A part of the portafilter that dispenses water evenly across it.
+Equipment,Coffee making machines,Espresso machines,,,,A machine that brews coffee by forcing pressurized water near boiling point through ground coffee and a filter in order to produce espresso.
+Equipment,Grinders,,,,,A type of grinder that produces consistent and uniform grinds.
+Equipment,Grinders,Grounds receivers,,,,The part of a coffee grinder where grounds are received after the grinding process.
+Equipment,Grinders,Hoppers,,,,The part of a coffee grinder that holds beans and feeds them into the grinding mechanism.
+Equipment,Grinders,Dosers,,,,A spring-loaded device on specialized espresso grinders that dispenses a single serving of ground coffee.
+Equipment,Coffee drinking glasses,,,,,Vessels used to hold a brew that's ready to drink.
+Equipment,Coffee drinking glasses,Cupping glasses,,,,Glasses used when cupping.
+Equipment,Coffee drinking glasses,Demitasse,,,,A coffee cup that holds a traditional shot of espresso.
+Equipment,Coffee refractometers,,,,,A device that estimates the strength of a brew.
+Coffee Styles,,,,,,
+Coffee Styles,Decaf,,,,,Coffee brewed with beans that have had most of their caffeine removed.
+Coffee Styles,Instant coffee,,,,,"Dehydrogenated coffee, can be brewed any way."
+Coffee Styles,Drip coffee,,,,,Coffee prepared by pouring hot water through coffee grounds.
+Coffee Styles,Drip coffee,Iced coffee,,,,Coffee prepared with cold milk or brewed cold.
+Coffee Styles,Drip coffee,Irish coffee,,,,"Beverage containing drip coffee, whiskey, and sugar."
+Coffee Styles,Drip coffee,Cold brew,,,,Brewed coffee prepared with cold water.
+Coffee Styles,Drip coffee,Cold brew,Nitro coffee,,,
+Coffee Styles,Drip coffee,Cafe au lait,,,,Beverage prepared with coffee and hot milk.
+Coffee Styles,Drip coffee,Red eye,,,,Beverage consisting of drip coffee and one shot of espresso.
+Coffee Styles,Drip coffee,Red eye,Black eye,,,Beverage consisting of drip coffee and two shots of espresso.
+Coffee Styles,Espresso,,,,,Brewing method where hot water is forced through a packed bed of ground coffee.
+Coffee Styles,Espresso,Raf coffee,,,,"Russian beverage prepared with 1 part espresso, 1 part creamer, and vanilla sugar."
+Coffee Styles,Espresso,Doppio,,,,Beverage containing two shots of espresso.
+Coffee Styles,Espresso,Cafe creme,,,,A coffee drink brewed by extracting espresso shots and diluting them with hot water.
+Coffee Styles,Espresso,Cortado,,,,Beverage prepared with 1 oz of espresso and 1 oz of steamed milk.
+Coffee Styles,Espresso,Flat white,,,,Beverage prepared with espresso and a small amount of steamed milk.
+Coffee Styles,Espresso,Americano,,,,Beverage prepared with espresso and hot water.
+Coffee Styles,Espresso,Corretto,,,,Beverage prepared with espresso and brandy.
+Coffee Styles,Espresso,Affogato,,,,Dessert prepared by pouring a shot of espresso over ice cream.
+Coffee Styles,Espresso,Cappuccino,,,,"Beverage prepared with 1 part espresso, 1 part steamed milk, and 1 part milk foam."
+Coffee Styles,Espresso,[appearance of],,,,
+Coffee Styles,Espresso,[appearance of],Coda di topo,,,Refers to shape of espresso streams from portafilters.
+Coffee Styles,Espresso,[appearance of],Tiger striping,,,Contrast of darker and lighter cream in an espresso stream.
+Coffee Styles,Espresso,[appearance of],Blonding,,,A change to a light blond color at the end of an espresso pull.
+Coffee Styles,Espresso,[appearance of],Coffee bloom,,,Describes the foam or instant release of gases when hot water contacts ground coffee beans fresh from the grinder.
+Coffee Styles,Espresso,[appearance of],Crema,,,The pale brown foam atop a tazzina of espresso.
+Coffee Styles,Espresso,[appearance of],Crema,Mottling,,Speckles and splotches in the crema of an espresso.
+Coffee Styles,Espresso,[appearance of],Channeling,,,Water passing through cracks in an espresso puck.
+Coffee Styles,Espresso,Macchiato,,,,Beverage prepared with espresso and a small amount of milk foam.
+Coffee Styles,Espresso,Mocha,,,,"Beverage prepared with espresso, chocolate syrup, steamed milk and whipped cream."
+Coffee Styles,Espresso,Lungo,,,,Espresso prepared with twice as much water as usual.
+Coffee Styles,Espresso,Latte,,,,"Beverage prepared with espresso, steamed milk, and frothed milk."
+Coffee Styles,Espresso,Ristretto,,,,Espresso prepared with half as much water as usual.
+Coffee Styles,Espresso,Frappe,,,,"Beverage consisting of espresso, iced water, and milk."
+Coffee Styles,Regional coffee styles,,,,,
+Coffee Styles,Regional coffee styles,Turkish coffee,,,,"Coffee prepared with an extremely fine grind, served with the grounds in it."
+Coffee Styles,Regional coffee styles,Greek coffee,,,,Coffee that is boiled rather than brewed.
+Coffee Styles,Regional coffee styles,Vietnamese iced coffee,,,,
+"Actions, Activities & Processes",,,,,,
+"Actions, Activities & Processes",Agents,,,,,
+"Actions, Activities & Processes",Agents,Baristas,,,,
+"Actions, Activities & Processes",Agents,Baristas,Home baristas,,,
+"Actions, Activities & Processes",Brewing methods,,,,,
+"Actions, Activities & Processes",Extraction,,,,,
+"Actions, Activities & Processes",Brewing methods,Espresso machine brewing,,,,
+"Actions, Activities & Processes",Brewing methods,Espresso machine brewing,Tamping,,,The process of compacting ground coffee with a tamper.
+"Actions, Activities & Processes",Brewing methods,Espresso machine brewing,Temperature surfing,,,The technique used to achieve optimal brew temps taking into account the inaccuracy of machine readouts and the on/off cycle of boiler heating elements.
+"Actions, Activities & Processes",Brewing methods,Espresso machine brewing,Pre-infusion,,,Process of gently soaking coffee grounds before applying full brewing pressure.
+"Actions, Activities & Processes",Brewing methods,Espresso machine brewing,Flushing,,,The process of stabilizing and reducing temperature on espresso machines.
+"Actions, Activities & Processes",Brewing methods,Immersion brewing,,,,
+"Actions, Activities & Processes",Brewing methods,Immersion brewing,Cold-water brewing,,,A type of brewing method in which ground coffee is soaked in a small amount of cold water for 10-20 hours.
+"Actions, Activities & Processes",Brewing methods,Immersion brewing,Vacuum brewing,,,"A brewing system using a device with two chambers, in which water is heated in a lower chamber, creating steam which pushes most of the water up a tube into an upper chamber, where it infuses with ground coffee. When the apparatus is removed from heat, a vacuum in the lower chamber is created as the remaining steam in the lower compartment condenses, thereby sucking the coffee liquor down into it."
+"Actions, Activities & Processes",Brewing methods,Immersion brewing,Clover brewing,,,A full-immersion brewing method paired with vacuum extraction using a machine that can be adjusted in many different ways.
+"Actions, Activities & Processes",Brewing methods,Drip brewing,,,,
+"Actions, Activities & Processes",Brewing methods,Drip brewing,Flip brewing,,,"A style of drip method brewer in which the ground coffee is secured in a two-sided strainer at the waist of the pot between two closed compartments. The brewing water is heated in one compartment, then the pot is flipped over, and the hot water drips through the coffee into the opposite compartment."
+"Actions, Activities & Processes",Brewing methods,Drip brewing,"Pour-over (Actions, Activities & Processes)",,,Brewing method that involves pouring hot water over a bed of coffee grounds.
+"Actions, Activities & Processes",Brewing methods,Percolation brewing,,,,"A type of brewing method in which hot water percolates, or filters down through, a bed of ground coffee."
+"Actions, Activities & Processes",Latte art,,,,,Art created on the surface of a latte by carefully adding milk to the drink.
