@@ -1,10 +1,11 @@
 # LIS598ThesaurusViewer
+Documentation WIP
 **Notes**
 <br>The code is written by inputting instructions in generated-AI (including ChatGPT and CoPilot), crossreferencing all tools, and experimenting them in GitHub</br>
 **Design Concept Map**
 ![LIS598 - Page 1](https://github.com/user-attachments/assets/1f8e1209-1ff2-4e23-a12e-07cecc79cdc1)
 **AI-Integration Flowchart**
-![LIS598 - Page 2(1)](https://github.com/user-attachments/assets/64f22b50-9283-4a41-a445-3d9dcb3b104c)
+![LIS598 - Page 2(3)](https://github.com/user-attachments/assets/e840c717-3fab-4180-9a68-fd7cbd325514)
 Created in LucidChart
 
 **Log**<br>
