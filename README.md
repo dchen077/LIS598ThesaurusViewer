@@ -2,8 +2,9 @@
 **Notes**
 <br>The code is written by inputting instructions in generated-AI (including ChatGPT and CoPilot), crossreferencing all tools, and experimenting them in GitHub</br>
 **Design Concept Map**
-![LIS598(3)](https://github.com/user-attachments/assets/4f31fbcb-fc80-457d-ae63-efcafd953423)
+![LIS598 - Page 1](https://github.com/user-attachments/assets/1f8e1209-1ff2-4e23-a12e-07cecc79cdc1)
 **AI-Integration Flowchart**
+![image](https://github.com/user-attachments/assets/66c6da2c-a8c3-42a7-8dd9-9549195f756f)
 Created in LucidChart
 
 **Log**<br>
