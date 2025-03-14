@@ -10,7 +10,8 @@ Feel free to copy, modify, and clone it to your repository.
 ## How to use the ThesaurusViewer
 * The ThesaurusViewer is separated into two parts: the details panel and the hierarchical list. 
 * To replace the dataset with your own, simply upload your thesaurus in the dataset and replace the corresponding link in the script. You can also use a more user-friendly styling sheet by replacing the current one with the one titled "regularstyle.css".
-* To structure your data so that the script can process, please see the instruction in datasets folder. <br>
+* To structure your data so that the script can process, please see the instruction in datasets folder.
+* [CLICK HERE](https://dchen077.github.io/LIS598ThesaurusViewer/) to access the viewer.<br>
 
 All of these will be annotated in the index.html script. 
 
