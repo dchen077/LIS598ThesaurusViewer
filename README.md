@@ -1,14 +1,14 @@
 # LIS598ThesaurusViewer
-Documentation WIP
-**Notes**
-<br>The code is written by inputting instructions in generated-AI (including ChatGPT and CoPilot), crossreferencing all tools, and experimenting them in GitHub</br>
+The goal of my LIS598 Project was to experiment whether I can build an interface with extremely limited knowledge of javascript and html using generative AI. The short answer is yes. In Project Documentation folder,
+I documented my journey of how I realized the Thesaurus Viewer from the design concep map to a working interface.<br>
+
+## Diagrams
 **Design Concept Map**
-![LIS598 - Page 1](https://github.com/user-attachments/assets/1f8e1209-1ff2-4e23-a12e-07cecc79cdc1)
+![LIS598 - Page 1(1)](https://github.com/user-attachments/assets/c1e375b6-6193-4016-9ed5-e907a4419a87)
 **AI-Integration Flowchart**
 ![LIS598 - Page 2(3)](https://github.com/user-attachments/assets/e840c717-3fab-4180-9a68-fd7cbd325514)
 Created in LucidChart
-
-**Log**<br>
+## Log
 *2-19-2025: Hallucinating A Happy Ending*	
 1. Attempt Failed: Feeding ChatGPT design doc and asking it create a two panel viewer. 
 	a. Partial result. The code displayed two panels. However, it tragically failed to parse the csv file and read any meaningful data. Again, there were two panels though. Also learned how to find errors and "debug" with ChatGPT from console. Switching to CoPilot or DeepSeek did not yield any meaningful result either.
