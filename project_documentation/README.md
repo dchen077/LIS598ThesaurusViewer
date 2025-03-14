@@ -7,7 +7,7 @@ First, I began with a design doc after consulting with my professor Ben Lee :tad
 
 The csv file part was inspired by my interaction with PoolParty, which is a commercial thesaurus/taxonomy tool I have used in LIS537. After my group built a thesaurus in PoolParty, I can export an excel file that contains all the information (See design doc). My viewer was inspired by how a thesaurus viewer typically looks like (See design doc) with a hierarchica list on the left and details of a term on the right. 
 
-In other words, the goal is not to reimage the structure of a thesaurus but to create a simple tool that anyone can use (if they have a csv file) and display the thesaurus in a fun and interesting way witout having to find commercial tools or figuring out how to use SQL server with many of the open source tools.
+In other words, the goal is not to reimagine the structure of a thesaurus but to create a simple tool that anyone can use (if they have a csv file) and display the thesaurus in a fun and interesting way witout having to find commercial tools or figuring out how to use SQL server with many of the open source tools.
 
 ## Step 2: A (Seemingly) Sisyphean Task
 Here is an unnecessarily detailed log (mostly failures) of creating the thesaurus viewer and inputting directions in ChatGPT. Feel free to jump ahead to seciton 3. 
