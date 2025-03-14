@@ -45,14 +45,30 @@ Good Attempt?
 5. I asked ChatGPT to add a function to find related terms. Related terms are easy because the corresponding value is on same row. If an end node has multiple related terms, it is separated by semi-colon and space, like this ```; ```
 6. Then, I asked ChatGPT to add a function that allow users to navigate to each broader, narrower, and related term in the hierarchy by clicking on them.
 7. Fixed comma parse, commas should now be parsed successfully and values should retain now. 
-8. USE FOR and Scope Notes can easily be added in the future with the same logic if I just need to add more values to the corresponding end node.
-9. I spent sometime playing around with css styling and learning how to configure sprite files. Adding more work but it was rather fun.
-10. **Note to self:** reupload the original css styling sheet as the current one is for personal amusement and not very accessible. 
-11. Stretch goals: 1) Users can directly upload a csv file instead of hardcoding it in GitHub. 2) Python code that automatically populates the emtpy cells so users don't have to do it themselves. 3) Make it look pretty :)
+8. I spent sometime playing around with css styling and learning how to configure sprite files. Adding more work but it was rather fun.
 
-## Step 3: Summary
+## Step 3: Lesson Learned
 ### AI-Integration Flowchart (Created in LucidChart)
 ![LIS598 - Page 2(3)](https://github.com/user-attachments/assets/e840c717-3fab-4180-9a68-fd7cbd325514)
+This diagram summarized what I learned from using ChatGPT to turn my design into a working interface without knowing any javascript (though I became much familiar with it at the end.) Between my design doc and final product, there is a long and frustrasting feedback loop where I spent many many hours with ChatGPT. 
+
+Everytime I input a direction to ChatGPT, it gives me a script that attempt to fulfill my direction. In most cases, it didn't work or I became stuck in a negative feedback loop where I kept receiving the wrong result and did know how to go forward. **To get out of the negative feedback loop, I summarized three methods.** 
+
+1) Make compromises and simplify. At the beginning, I had trouble directing ChatGPT to recognize that some empty cells actually are not empty but have assumed values associated with it. Instead of mulling over this, I decided to simplify how my csv file is structured. Instead of leaving the cells empty, I manually filled out the hierarchical list associated with each term. In hindsight, this proved to be useful as well because I later thought of auto-populating the cells as a fix so that users don't have to do it manually. 
+2) Think like a machine. I realized although ChatGPT masks itself behind human-speech, the best way to communicate was to think like a machine. Instead of trying to explain what broader and narrower terms are, I explain that I want to create a function that uses the logic x. 
+3) Go back to the roots. Sometimes, I notice the generated code uses certain function, such as tree view. Given that I have some familiarity with other programming languages (primarily xlst), I figured treeview is probably an established concept. A quick Google search proved that I was correct. By familiarizing myself with a more directed approach with javascript tutorials (instead learning everything from groundup), I was able to better direct ChatGPT to generate a script that matches my requirement. 
+
+Beside the three main points mentioned above, I also became more familiar with javascript. The more I examined the generated script alongside with ChatGPT the more I became familiar with the logic ChatGPT used to generate the code. For example, when I was adding a function for definitions later on in the process, I examined the existing functions and realized ChatGPT used columns numbers to parse and recognize related term. In other words, it assumed the last column is always related terms. Then, I was able to give more detailed description for it to change and modify the script in order to add more functions. 
+
+Will I magically become an expert in javascript tomorrow? Probably not, however, I believe with time and effort I can take over the script writing process and consult ChatGPT for alternative ideas and make my own decisions. 
+
+## Step 4: What Next?
+1. Users can directly upload a csv file instead of uploading it on GitHub and changing the script.
+2. Python code that automatically populates empty cells so users don't have to manually copy and paste each term themselves. (Experiment in progress)
+3. Add additional thesaurus details. 
+4. Add a css styling sheet that is more user friendly and accessible. 
+5. Make the script less restrictive. Currently, the csv files must be structured in a certain way for the script to process. 
+6. Create documentation for structuring the csv files. (High priority)
 
 
 ## Appendix: Tools Used
