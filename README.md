@@ -3,7 +3,7 @@
 The goal of my LIS598 Project was to experiment whether I can build an interface with extremely limited knowledge of javascript and html using generative AI. The short answer is Yes. In the Project Documentation folder,
 I documented my journey of how I transformed the Thesaurus Viewer from a design concep map into a working interface.<br>
 
-In addition, I wanted to put myself in the shoes of librarians or other professionals in the GLAM sector who doesn't have extensive programming knowledge and explore how they can utilize generative AI to build a project based on their own design and vision. 
+I wanted to put myself in the shoes of librarians or other professionals in the GLAM sector who don't have extensive programming knowledge and don't have the resources to invest in either hiring programmers or learning the basics in months. I want to explore how we can utilize generative AI to build a project based on our design and vision in a short amount of time. For me, it was a little over a month. 
 
 Feel free to copy, modify, and clone it to your repository.
 
