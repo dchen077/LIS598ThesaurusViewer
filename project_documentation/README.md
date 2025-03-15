@@ -3,7 +3,7 @@ This tells the journey of how I build a working thesaurus viewer without knowing
 ## Step 1: A Hopeful Beginning
 ### Design Concept Map (Created in LucidChart)
 ![LIS598 - Page 1(1)](https://github.com/user-attachments/assets/c1e375b6-6193-4016-9ed5-e907a4419a87)
-First, I began with a design doc after consulting with my professor Ben Lee :tada:. I wanted to create a two panel viewer where I feed my script a csv file and it will display a hierarchical list on the left and a details panel with broader terms, narrower terms, and related terms on the right. The hierarchical list can collapse and fold. When I click on a term in the broader or narrower term in the details panel, it will direct me to that term in the hierarchical list. 
+My journey began with a design document after consulting my professor, Ben Lee:tada:. My goal was to create a two-panel viewer where I could feed a CSV file into a script, displaying a hierarchical list on the left and a details panel on the right. The hierarchical list would be collapsible, and clicking on terms in the details panel would navigate to that term in the hierarchy.
 
 The csv file part was inspired by my interaction with PoolParty, which is a commercial thesaurus/taxonomy tool I have used in LIS537. After my group built a thesaurus in PoolParty, I can export an excel file that contains all the information (See design doc). My viewer was inspired by how a thesaurus viewer typically looks like (See design doc) with a hierarchica list on the left and details of a term on the right. 
 
@@ -52,6 +52,12 @@ Good Attempt?
 ![LIS598 - Page 2(3)](https://github.com/user-attachments/assets/e840c717-3fab-4180-9a68-fd7cbd325514)
 This diagram summarized what I learned from using ChatGPT to turn my design into a working interface without knowing any javascript (though I became much familiar with it at the end.) Between my design doc and final product, there is a long and frustrasting feedback loop where I spent many many hours with ChatGPT. 
 
+Everytime I input a direction to ChatGPT, it gives me a script that attempt to fulfill my direction. In most cases, it didn't work or I became stuck in a negative feedback loop where I kept receiving the wrong result and did know how to go forward. To get out of the negative feedback loop, I summarized three methods. To escape these loops, I identified three methods:
+
+1. Make Compromises and Simplify: Instead of struggling with ChatGPT's inability to recognize assumed values in empty cells, I restructured my CSV format. This later helped in developing an auto-population script, which is still in  its experiment phase.
+2. Think Like a Machine: Instead of trying to explain what broader and narrower terms are, I explain that I want to create a function that uses the logic x.
+3. Go Back to the Roots: Sometimes, I notice the generated code uses certain function, such as tree view. Given that I have some familiarity with other programming languages (primarily xlst), I figured treeview is probably an established concept. A quick Google search proved that I was correct. By familiarizing myself with a more directed approach with javascript tutorials (instead learning everything from groundup), I was able to better direct ChatGPT to generate a script that matches my requirement.
+
 Everytime I input a direction to ChatGPT, it gives me a script that attempt to fulfill my direction. In most cases, it didn't work or I became stuck in a negative feedback loop where I kept receiving the wrong result and did know how to go forward. **To get out of the negative feedback loop, I summarized three methods.** 
 
 1) Make compromises and simplify. At the beginning, I had trouble directing ChatGPT to recognize that some empty cells actually are not empty but have assumed values associated with it. Instead of mulling over this, I decided to simplify how my csv file is structured. Instead of leaving the cells empty, I manually filled out the hierarchical list associated with each term. In hindsight, this proved to be useful as well because I later thought of auto-populating the cells as a fix so that users don't have to do it manually. 
@@ -60,7 +66,7 @@ Everytime I input a direction to ChatGPT, it gives me a script that attempt to f
 
 Beside the three main points mentioned above, I also became more familiar with javascript. The more I examined the generated script alongside with ChatGPT the more I became familiar with the logic ChatGPT used to generate the code. For example, when I was adding a function for definitions later on in the process, I examined the existing functions and realized ChatGPT used columns numbers to parse and recognize related term. In other words, it assumed the last column is always related terms. Then, I was able to give more detailed description for it to change and modify the script in order to add more functions. 
 
-Will I magically become an expert in javascript tomorrow? Probably not, however, I believe with time and effort I can take over the script writing process and consult ChatGPT for alternative ideas and make my own decisions. 
+Will I magically become an expert in javascript overnight? Probably not, however, I believe with time and effort I can take over the script writing process and consult ChatGPT for alternative ideas and make my own decisions. 
 
 ## Step 4: What Next?
 1. Users can directly upload a csv file instead of uploading it on GitHub and changing the script.
