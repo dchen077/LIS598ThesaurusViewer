@@ -1,5 +1,5 @@
 # Progress Log
-This tells the journey of how I build a working thesaurus viewer without knowing any javascript or html.  
+These steps tells the journey of how I build a working thesaurus viewer without knowing any javascript or html.  
 ## Step 1: A Hopeful Beginning
 ### Design Concept Map (Created in LucidChart)
 ![LIS598 - Page 1(1)](https://github.com/user-attachments/assets/c1e375b6-6193-4016-9ed5-e907a4419a87)
@@ -47,7 +47,7 @@ Good Attempt?
 7. Fixed comma parse, commas should now be parsed successfully and values should retain now. 
 8. I spent sometime playing around with css styling and learning how to configure sprite files. Adding more work but it was rather fun.
 
-## Step 3: Lesson Learned
+## Step 3: Ariadne's Thread - Untangling my unnecessary detailed progress log
 ### AI-Integration Flowchart (Created in LucidChart)
 ![LIS598 - Page 2(3)](https://github.com/user-attachments/assets/e840c717-3fab-4180-9a68-fd7cbd325514)
 This diagram summarized what I learned from using ChatGPT to turn my design into a working interface without knowing any javascript (though I became much familiar with it at the end.) Between my design doc and final product, there is a long and frustrasting feedback loop where I spent many many hours with ChatGPT. 
@@ -68,7 +68,7 @@ Beside the three main points mentioned above, I also became more familiar with j
 
 Will I magically become an expert in javascript overnight? Probably not, however, I believe with time and effort I can take over the script writing process and consult ChatGPT for alternative ideas and make my own decisions. 
 
-## Step 4: What Next?
+## Step 4: What's Next?
 1. Users can directly upload a csv file instead of uploading it on GitHub and changing the script.
 2. Python code that automatically populates empty cells so users don't have to manually copy and paste each term themselves. (Experiment in progress)
 3. Add additional thesaurus details. 
